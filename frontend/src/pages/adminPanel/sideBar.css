@@ -1,0 +1,15 @@
+.list-group a:hover {
+    background-color: blue;
+    color: white;
+    cursor: pointer;
+
+}
+
+.carIcon {
+    font-size: 110px;
+    color: rgb(0, 162, 255);
+}
+
+.OnlineTaxi {
+    color: rgb(255, 166, 0);
+}

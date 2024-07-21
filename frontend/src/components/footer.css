@@ -1,0 +1,11 @@
+.footer {
+    height: 400px;
+    width: 100%;
+
+}
+
+.global-class-name {
+    width: 200px;
+    height: 100px;
+    background-color: white;
+}

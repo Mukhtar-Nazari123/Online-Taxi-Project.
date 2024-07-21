@@ -1,0 +1,26 @@
+.searchBar {
+    height: 75px;
+    border-radius: 5px;
+    border: 1px solid black;
+}
+
+.searchBarItem {
+    height: 50px;
+    padding-left: 10px;
+    padding-right: 10px;
+}
+
+ .Addbutton {
+    height: 50px;
+    width: 70px;
+    border-radius: 5px;
+ }
+ .searchInput {
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+ }
+
+ .searchButton {
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+ }

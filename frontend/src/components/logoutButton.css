@@ -1,0 +1,17 @@
+.logoutBtn {
+    display: flex;
+    height: 40px;
+    width: 100px;
+    cursor: pointer;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+    margin-top: 5px;
+    margin-bottom: 20px;
+}
+
+.logoutBtn:hover {
+    background-color: #f4f5f4; /* Darker green */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }

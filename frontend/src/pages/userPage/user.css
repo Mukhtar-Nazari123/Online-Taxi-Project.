@@ -1,0 +1,30 @@
+.RequestTaxiDiv {
+    background-color: rgb(216, 212, 207);
+    width: 400px;
+    height: auto;
+    padding: 20px;
+    margin-top: 15PX;
+    margin-left: 0;
+    margin-left: 0;
+    border-radius: 10px;
+}
+
+.originDestinationInput {
+    height: 45px;
+    width: 100%;
+    border-radius: 5px;
+    margin-top: 10px;
+}
+
+.suggestionPlacesList {
+    list-style: none;
+    padding: 0;
+    max-height: 200px;
+    overflow-y: auto;
+    position: absolute;
+    background-color: white;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    z-index: 1000;
+    width: 360px;
+}

@@ -1,0 +1,55 @@
+.userProfile {
+    display: flex;
+    position: absolute;
+    overflow-y: auto;
+    top: 60px;
+    right: 10px;
+    width: 400px;
+    height: 600px;
+    z-index: 1000;
+    border-radius: 10px;
+    margin: 0%;
+    padding: 0%;
+    
+}
+
+.card {
+    padding: 0;
+    background-color: rgb(223, 218, 218);
+}
+
+.container1 {
+    width: 100%;
+    height: 55px;
+    background-color: rgb(3, 171, 238);
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+    margin: 0;
+}
+
+.close {
+    position: absolute;
+    right: 15px;
+    margin: 0;
+}
+
+.editButton {
+    display: flex;
+    height: 40px;
+    width: 100px;
+    cursor: pointer;
+    border-radius: 5px;
+    justify-content: center;
+    align-items: center;
+}
+.editButton:hover {
+    background-color: #f4f5f4; /* Darker green */
+    transform: translateY(-2px);
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+  }
+  .phoneIcon {
+    color: green;
+  }
+  .emailIcon {
+    color: red;
+  }

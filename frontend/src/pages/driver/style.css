@@ -1,0 +1,98 @@
+/* DriverPage.css */
+
+.driver-page {
+  display: flex;
+  max-width: 1000px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+.menu-bar {
+  width: 20%;
+  background-color: #333;
+  color: white;
+  border-radius: 8px;
+  padding: 10px;
+}
+
+.menu-bar ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.menu-bar li {
+  cursor: pointer;
+  padding: 10px;
+  transition: background-color 0.3s;
+}
+
+.menu-bar li:hover,
+.menu-bar li.active {
+  background-color: #555;
+}
+
+.content {
+  flex: 1;
+  padding: 0 20px;
+}
+
+/* .content section {
+  display: ${props => props.displaySection ? 'block' : 'none'};
+  margin-bottom: 20px;
+} */
+
+.content h3 {
+  font-size: 1.8em;
+  margin-bottom: 10px;
+  color: #333;
+}
+
+.content p {
+  color: #666;
+}
+
+.content ul {
+  list-style-type: none;
+  padding: 0;
+}
+
+.content li {
+  padding: 10px;
+  border-bottom: 1px solid #ccc;
+}
+
+.content form div {
+  margin-bottom: 15px;
+}
+
+.content form label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.content form input,
+.content form button {
+  width: 100%;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+}
+
+.content form button {
+  margin-top: 10px;
+  background-color: #007bff;
+  color: white;
+  border: none;
+  cursor: pointer;
+  padding: 10px 20px;
+  border-radius: 4px;
+  transition: background-color 0.3s;
+}
+
+.content form button:hover {
+  background-color: #0056b3;
+}
