@@ -4,6 +4,7 @@ namespace App\Http\Controllers\API;
 
 use App\Http\Controllers\Controller;
 use App\Models\User;
+use App\Models\Driver;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -33,6 +34,7 @@ class UserAuthController extends Controller
             'phone_number' => 'required|string|max:10|min:10',
             'password' => 'required|string|min:8',
             'confirm_password' => 'required|same:password',
+            'role' => 'required|string',
         ]);
 
         if($validateUser->fails()){
@@ -48,51 +50,72 @@ class UserAuthController extends Controller
             'email' => $request->email,
             'phone_number' => $request->phone_number,
             'password' => $request->password,
-            'role' => 'user',
+            'role' => $request->role,
         ]);
 
         $token = $user->createToken($user->email.'_Token')->plainTextToken;
 
         return response()->json([
             'status' => 200,
+            'id' => $user->id,
             'name' => $user->name,
             'token' => $token,
             'message' => 'Congratulations! Your account has been successfully created.'
         ]);
     }
 
-    public function update(Request $request, User $user)
+        public function update(Request $request, User $user)
     {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'email' => 'required|string|email|unique:users|max:255',
-            'phone_number' => 'required|string|max:10|min:10',
-            'password' => 'required|string|min:8',
-            'confirm_password' => 'required|same:password',
+        $validatedData = $request->validate([
+            'name' => 'nullable|string|max:255',
+            'email' => 'nullable|string|email|unique:users,email,'.$user->id.'|max:255',
+            'phone_number' => 'nullable|string|max:10|min:10',
+            'old_password' => 'required_with:password|string|min:8',
+            'password' => 'nullable|string|min:8',
+            'confirm_password' => 'required_with:password|same:password',
         ]);
 
-        $user->update([
-            'name' => $request->name,
-            'email' => $request->email,
-            'phone' => $request->phone,
-            'password' => $request->password ? Hash::make($request->password) : $user->password,
-        ]);
+        $updatedFields = [];
+
+        if ($request->has('name')) {
+            $updatedFields['name'] = $validatedData['name'];
+        }
+
+        if ($request->has('email')) {
+            $updatedFields['email'] = $validatedData['email'];
+        }
+
+        if ($request->has('phone_number')) {
+            $updatedFields['phone_number'] = $validatedData['phone_number'];
+        }
+
+        if ($request->has('password')) {
+            if (Hash::check($validatedData['old_password'], $user->password)) {
+                $updatedFields['password'] = $validatedData['password'];
+            } else {
+                return response()->json(['error' => 'Incorrect old password'], 400);
+            }
+        }
+
+        $user->update($updatedFields);
+        try {
+            $user->update($updatedFields);
+        } catch (\Illuminate\Validation\ValidationException $e) {
+            return response()->json($e->errors(), 422);
+        }
+
+        // Refresh the user instance to ensure the password is updated correctly
+        $user->refresh();
 
         return response()->json($user);
     }
 
-    public function destroy(User $user)
-    {
-        $user->delete();
-        return response()->json(null, 204);
-    }
 
     public function login(Request $request)
     {
         try {
             // Validate the user's credentials
-            $validateUser = Validator::make($request->all(),
-            [
+            $validateUser = Validator::make($request->all(), [
                 'email' => 'required|string|email',
                 'password' => 'required|string',
             ]);
@@ -100,7 +123,7 @@ class UserAuthController extends Controller
             if ($validateUser->fails()) {
                 return response()->json([
                     'status' => false,
-                    'message' => 'validation error',
+                    'message' => 'Validation error',
                     'errors' => $validateUser->messages()
                 ], 401);
             }
@@ -113,13 +136,28 @@ class UserAuthController extends Controller
                 ], 401);
             }
 
-            $user = User::where('email', $request->email)->first();
+            // Retrieve the authenticated user
+            $user = Auth::user(); // Get the authenticated user directly
+
+            // Find the associated driver (assuming you have a 'driver' relationship in your User model)
+            $driver = $user->driver;
+
+            $driverStatus = 'N/A'; // Default status if no driver is found
+
+            if ($driver) {
+                $driverStatus = $driver->status; // Get the driver's status
+            }
+
             return response()->json([
                 'status' => true,
-                'message' => 'Congratulations! you logged in successfully.',
+                'message' => 'Congratulations! You logged in successfully.',
+                'id'=> $user->id,
                 'name' => $user->name,
+                'role' => $user->role,  // Include user role
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
+                'driverStatus' => $driverStatus
             ], 200);
+
         } catch (\Throwable $th) {
             return response()->json([
                 'status' => false,
@@ -129,6 +167,7 @@ class UserAuthController extends Controller
     }
 
     public function profile(){
+
         $userData = auth()->user();
         return response()->json([
             'status' => true,
@@ -136,7 +175,7 @@ class UserAuthController extends Controller
             'name' => $userData->name,
             'email' => $userData->email,
             'phone' => $userData->phone_number,
-            'id' => auth()->user()->id
+            'id' => auth()->user()->id,
         ], 200);
     }
     public function logout(){

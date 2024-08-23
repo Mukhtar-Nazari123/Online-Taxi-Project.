@@ -19,10 +19,14 @@ export class Navbar extends Component {
             <div class="offcanvas-body navItems">
               <ul class="navbar-nav justify-content flex-grow-1 pe-3">
                 <li class="nav-item">
-                  <a class="nav-link text-light p-4" aria-current="page" href="#1">Ride</a>
+                  <Link to="/register" className="text-decoration-none">
+                    <a class="nav-link text-light p-4" aria-current="page" href="#1">Ride</a>
+                  </Link>
                 </li>
                 <li class="nav-item">
-                  <a class="nav-link text-light p-4" href="#1">Drive</a>
+                  <Link to="/driverRegister" className="text-decoration-none">
+                    <a class="nav-link text-light p-4" href="#1">Drive</a>
+                  </Link>
                 </li>
                 <li class="nav-item">
                   <a class="nav-link text-light p-4" href="#1">About us</a>
