@@ -5,7 +5,7 @@ import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../components/axiosInstance";
 import swal from 'sweetalert';
 
-const RegistrationForm = () => {
+const DriverRegistrationForm = () => {
   const navigate = useNavigate();
   const [registerInput, setRegister] = useState({
     name: "",
@@ -30,25 +30,26 @@ const RegistrationForm = () => {
       phone_number: registerInput.phone_number,
       password: registerInput.password,
       confirm_password: registerInput.confirm_password,
-      role: "user",
+      role: "driver",
     };
 
     axiosInstance.get('sanctum/csrf-cookie').then(response => {
       axiosInstance.post('api/register', data).then(res => {
-        console.log('request sent!!');
+        console.log('Request sent!!');
         if (res.data.status === 200) {
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('name', res.data.name);
-          localStorage.setItem('id', res.data.id);
+          localStorage.setItem('id', res.data.id); // Store user ID
 
-          
           // Set token expiration (e.g., 7 days)
           const expiresIn = 7;
           const expirationDate = new Date(new Date().getTime() + expiresIn * 24 * 60 * 60 * 1000);
           localStorage.setItem('tokenExpiration', expirationDate.toISOString());
 
           swal("Success", res.data.message, "success");
-          navigate('/user');
+
+          // Navigate to DriverInfo with user ID
+          navigate(`/driverInfo`);
         } else {
           setRegister({ ...registerInput, error_list: res.data.errors });
         }
@@ -64,7 +65,7 @@ const RegistrationForm = () => {
       <Row className="justify-content-md-center">
         <Col md={6}>
           <Form className="registration-form" onSubmit={registerSubmit}>
-            <h2 className="text-center">Register</h2>
+            <h2 className="text-center">Driver Register</h2>
             <Form.Group controlId="formName">
               <Form.Label className="formLabel">Name</Form.Label>
               <Form.Control
@@ -148,4 +149,4 @@ const RegistrationForm = () => {
   );
 };
 
-export default RegistrationForm;
+export default DriverRegistrationForm;

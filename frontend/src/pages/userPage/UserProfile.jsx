@@ -69,8 +69,8 @@ function UserProfile() {
                 style={{ width: "120px" }}
               />
               </div>
-              <div className="col text-center">
-                <div className="row">
+              <div className="col ">
+                <div className="row text-center">
                   <p className="text-muted mb-0 fs-2">{userData.name}</p>
                 </div>
                 <hr className='mx-4 my-2' />
@@ -87,7 +87,7 @@ function UserProfile() {
                   <div className="col-sm-2">
                     <i class="bi bi-telephone-plus fs-2 phoneIcon"></i>
                   </div>
-                  <div className="col-sm-10 d-flex justify-content-center">
+                  <div className="col-sm-10 d-flex">
                     <p className="text-muted fs-5 my-auto ">{userData.phone}</p>
                   </div>
                 </div>
@@ -100,10 +100,14 @@ function UserProfile() {
             </div>
             {showEditForm && (
             <div className=''>
-              <ProfileEditForm/>
+              <ProfileEditForm 
+              name ={userData.name} 
+              email ={userData.email} 
+              phone ={userData.phone}
+              id ={userData.id} />
             </div>
             )}
-            <LogoutButton/>
+            <LogoutButton />
           </div>
         </div>
       </div>
