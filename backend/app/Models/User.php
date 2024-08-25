@@ -11,6 +11,17 @@ class User extends Authenticatable
 {
     use HasApiTokens, HasFactory, Notifiable;
 
+
+    public function isAdmin()
+    {
+    return $this->role === 'admin';
+    }
+
+    public function isDriver()
+    {
+    return $this->role === 'driver';
+    }
+
     /**
      * The attributes that are mass assignable.
      *
@@ -56,5 +67,10 @@ class User extends Authenticatable
     public function setPasswordAttribute($password)
     {
         $this->attributes['password'] = bcrypt($password);
+    }
+
+    public function driver()
+    {
+        return $this->hasOne(Driver::class);
     }
 }

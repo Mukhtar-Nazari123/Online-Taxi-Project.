@@ -41,6 +41,7 @@ export class Navbar extends Component {
               <ul class="navbar-nav justify-content flex-grow-1 pe-3">
                 <li class="nav-item">
                   <Link to="/register" className="text-decoration-none">
+
                     <a
                       class="nav-link text-light p-4"
                       aria-current="page"
@@ -48,13 +49,19 @@ export class Navbar extends Component {
                     >
                       Ride
                     </a>
+
+       
+
                   </Link>
                 </li>
                 <li class="nav-item">
                   <Link to="/driverRegister" className="text-decoration-none">
+
                     <a class="nav-link text-light p-4" href="#1">
                       Drive
                     </a>
+
+
                   </Link>
                 </li>
                 <li class="nav-item">
