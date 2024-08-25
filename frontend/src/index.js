@@ -1,20 +1,21 @@
-import 'bootstrap/dist/css/bootstrap.min.css'; 
-//import $ from 'jquery'; 
+import "bootstrap/dist/css/bootstrap.min.css";
+//import $ from 'jquery';
 //import Popper from 'popper.js';
 //import Popper from '@popperjs/core';
-import 'bootstrap/dist/js/bootstrap.bundle.min';
+import "bootstrap/dist/js/bootstrap.bundle.min";
 //import { Modal } from 'bootstrap';
-import 'bootstrap-icons/font/bootstrap-icons.css';
-import React from 'react';
-import ReactDOM from 'react-dom/client';
-import App from './App';
-import reportWebVitals from './reportWebVitals';
-import 'leaflet/dist/leaflet.css';
+import "bootstrap-icons/font/bootstrap-icons.css";
+import React from "react";
+import ReactDOM from "react-dom/client";
+import App from "./App";
+import reportWebVitals from "./reportWebVitals";
+import "leaflet/dist/leaflet.css";
 import "./index.css";
-import 'bootstrap/dist/css/bootstrap.min.css';
+// import "@fortawesome/fontawesome-free/css/all.min.css";
 
+import "bootstrap/dist/css/bootstrap.min.css";
 
-const root = ReactDOM.createRoot(document.getElementById('root'));
+const root = ReactDOM.createRoot(document.getElementById("root"));
 root.render(
   <React.StrictMode>
     <App />

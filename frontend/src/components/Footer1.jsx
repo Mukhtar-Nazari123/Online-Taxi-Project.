@@ -1,102 +1,140 @@
-import React from 'react'
-import { FaPhoneSquare, FaHome, FaMapMarkedAlt, FaCar } from "react-icons/fa";
-import { FaSquareFacebook, FaSquareWhatsapp } from 'react-icons/fa6'
-import { MdAttachEmail } from 'react-icons/md'
-import { IconContext } from "react-icons";
-import { LuLogIn, LuLogOut } from "react-icons/lu";
-import { Link } from 'react-router-dom';
+import React from "react";
+import {
+  FaFacebookF,
+  FaTwitter,
+  FaInstagram,
+  FaLinkedinIn,
+  FaHome,
+  FaCar,
+  FaIdCard,
+  FaSignInAlt,
+  FaUserPlus,
+} from "react-icons/fa";
+import { Container, Row, Col, Form, Button } from "react-bootstrap";
+import "bootstrap/dist/css/bootstrap.min.css";
+import "./footer.css"; // Import your custom CSS for additional styling
 
-function Footer1() {
+const Footer1 = () => {
   return (
-    <footer class="footer-07 bg-dark">
-			<div class="container">
-				<div class="row justify-content-center">
-					<div class="col-md-12 text-center">
-						<h2 class="footer-heading"><a href={"#1"} class="text-decoration-none">Online Taxi</a></h2>
-						<div className='d-flex justify-content-center gap-3 m-3'>
-							<a className='text-decoration-none' href={"#1"}>
-                                <div className='d-flex gap-2'>
-                                    <IconContext.Provider value={{size: '25px',color: 'white', className: "global-class-name" }}>
-                                       <FaHome />
-                                    </IconContext.Provider>
-                                    <h5>Home</h5>
-                                </div>
-                            </a>
-							<a className='text-decoration-none' href={"#1"}>
-                                <div className='d-flex gap-2'>
-                                    <IconContext.Provider value={{size: '25px', color: 'white', className: "global-class-name" }}>
-                                        <FaMapMarkedAlt/>
-                                    </IconContext.Provider>
-                                    <h5>Ride</h5>
-                                </div>
-                            </a>
-                            <a className='text-decoration-none' href={"#1"}>
-                                <div className='d-flex gap-2'>
-                                    <IconContext.Provider value={{size: '25px', color: 'white', className: "global-class-name" }}>
-                                        <FaCar />
-                                    </IconContext.Provider>
-                                    <h5>Drive</h5>
-                                </div>
-                            </a>
-                            <Link className='text-decoration-none' to="/login">
-                                <div className='d-flex gap-2'>
-                                    <IconContext.Provider value={{size: '25px', color: 'white', className: "global-class-name" }}>
-                                        <LuLogIn />
-                                    </IconContext.Provider>
-                                    <h5>Sign in</h5>
-                                </div>
-                            </Link>	
-                            <Link className='text-decoration-none' to="/register">
-                                <div className='d-flex gap-2'>
-                                    <IconContext.Provider value={{size: '25px',color: 'white' , className: "global-class-name" }}>
-                                        <LuLogOut />
-                                    </IconContext.Provider>
-                                    <h5>Sign up</h5>
-                                </div>
-                            </Link>	
-                        </div>
-			<ul class="list-group list-group-horizontal d-flex justify-content-center gap-2">
-            <li className='list-group-item rounded'>
-                <a href={"#1"} data-toggle="tooltip" data-placement="top" title="Whats App">
-                    <IconContext.Provider value={{size: '40px', color:"green", className: "global-class-name" }}>
-                      <FaPhoneSquare />
-                    </IconContext.Provider>
-                </a>
-              </li> 
-              <li className='list-group-item rounded'>
-                <a href={"#1"} data-toggle="tooltip" data-placement="top" title="Whats App">
-                    <IconContext.Provider value={{size: '40px', color:"green", className: "global-class-name" }}>
-                       <FaSquareWhatsapp/>
-                    </IconContext.Provider>
-                </a>
-              </li> 
-              <li className='list-group-item rounded'>
-                <a href={"#1"} data-toggle="tooltip" data-placement="top" title="Instagram">
-                   <IconContext.Provider value={{size: '40px', color:"red", className: "global-class-name" }}>
-                     <MdAttachEmail/>
-                  </IconContext.Provider>
-                </a>
-              </li>
-              <li className='list-group-item rounded'>
-                <a href={"#1"} data-toggle="tooltip" data-placement="top" title="Facebook">
-                   <IconContext.Provider value={{size: '40px', color:"blue", className: "global-class-name" }}>
-                     <FaSquareFacebook/>
-                   </IconContext.Provider>
-                </a>
-              </li>
-            </ul>
-					</div>
-				</div>
-				<div class="row mt-5">
-					<div class="col-md-12 text-center">
-						<p class="copyright text-white">
-					  Copyright &copy;<script>document.write(new Date().getFullYear());</script> All rights reserved | This template is made with <i class="ion-ios-heart" aria-hidden="true"></i> by <a className='text-decoration-none' href={"#1"}>Online Taxi</a>
-					</p>
-					</div>
-				</div>
-			</div>
-		</footer>
-  )
-}
+    <footer className="footer">
+      <Container>
+        <Row className="mb-5 text-center">
+          <Col>
+            <h2 className="company-name">Sina Taxi Company</h2>
+          </Col>
+        </Row>
 
-export default Footer1
+        <Row className="mb-5">
+          <Col md={6} className="mb-4 mb-md-0">
+            <h5>About Us</h5>
+            <p>
+              Sina Taxi Company provides reliable and efficient taxi services to
+              ensure your journey is comfortable and safe. With our commitment
+              to excellence and customer satisfaction, we strive to make every
+              ride an exceptional experience.
+            </p>
+          </Col>
+          <Col md={6}>
+            <h5>Contact Us</h5>
+            <Form>
+              <Form.Group className="mb-3">
+                <Form.Control
+                  type="email"
+                  placeholder="Enter your email"
+                  aria-label="Email"
+                  defaultValue="qurban.motahari2023@gmail.com"
+                />
+              </Form.Group>
+              <Form.Group className="mb-3">
+                <Form.Control
+                  as="textarea"
+                  placeholder="Write your message"
+                  aria-label="Message"
+                  rows={3}
+                />
+              </Form.Group>
+              <Button type="submit" className="btn-primary">
+                Send
+              </Button>
+            </Form>
+          </Col>
+        </Row>
+
+        <Row>
+          <Col className="text-center">
+            <h5>Connect and Navigate</h5>
+            <div className="social-icons mb-4">
+              <a
+                href="https://facebook.com/sinataxicompany"
+                className="me-3"
+                aria-label="Facebook"
+              >
+                <FaFacebookF />
+              </a>
+              <a
+                href="https://twitter.com/sinataxicompany"
+                className="me-3"
+                aria-label="Twitter"
+              >
+                <FaTwitter />
+              </a>
+              <a
+                href="https://instagram.com/sinataxicompany"
+                className="me-3"
+                aria-label="Instagram"
+              >
+                <FaInstagram />
+              </a>
+              <a
+                href="https://linkedin.com/company/sinataxicompany"
+                className="me-3"
+                aria-label="LinkedIn"
+              >
+                <FaLinkedinIn />
+              </a>
+            </div>
+            <div className="action-icons">
+              <a
+                href="https://websim.example.com/sina-taxi-company/"
+                className="me-3"
+                aria-label="Home"
+              >
+                <FaHome /> Home
+              </a>
+              <a
+                href="https://websim.example.com/sina-taxi-company/book-ride"
+                className="me-3"
+                aria-label="Book a Ride"
+              >
+                <FaCar /> Ride
+              </a>
+              <a
+                href="https://websim.example.com/sina-taxi-company/become-driver"
+                className="me-3"
+                aria-label="Become a Driver"
+              >
+                <FaIdCard /> Driver
+              </a>
+              <a
+                href="https://websim.example.com/sina-taxi-company/signin"
+                className="me-3"
+                aria-label="Sign In"
+              >
+                <FaSignInAlt /> Sign In
+              </a>
+              <a
+                href="https://websim.example.com/sina-taxi-company/signup"
+                className="me-3"
+                aria-label="Sign Up"
+              >
+                <FaUserPlus /> Sign Up
+              </a>
+            </div>
+          </Col>
+        </Row>
+      </Container>
+    </footer>
+  );
+};
+
+export default Footer1;

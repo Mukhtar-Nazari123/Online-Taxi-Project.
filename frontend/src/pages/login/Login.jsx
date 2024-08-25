@@ -1,12 +1,9 @@
 import { useState } from "react";
 import React from "react";
 import "./login.css"; // Import your custom styles
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from "../../components/axiosInstance";
 import swal from 'sweetalert';
-import { useNavigate } from 'react-router-dom';
-
-
 
 function Login() {
   const navigate = useNavigate();
@@ -18,7 +15,7 @@ function Login() {
 
   const handleInput = (e) => {
     e.persist();
-    setLogin({...loginInput, [e.target.name]: e.target.value});
+    setLogin({ ...loginInput, [e.target.name]: e.target.value });
   }
 
   const loginSubmit = (e) => {
@@ -31,14 +28,35 @@ function Login() {
 
     axiosInstance.get('sanctum/csrf-cookie').then(response => {
       axiosInstance.post('api/login', data).then(res => {
-        
         if (res.data.status === true) {
           console.log('request sent!!');
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('name', res.data.name);
-          navigate('/user');
-          swal("Success", res.data.message, "success")
-          
+
+          // Set token expiration (e.g., 7 days)
+          const expiresIn = 7;
+          const expirationDate = new Date(new Date().getTime() + expiresIn * 24 * 60 * 60 * 1000);
+          localStorage.setItem('tokenExpiration', expirationDate.toISOString());
+          const driverStatus = res.data.driverStatus;
+
+          switch (res.data.role) {
+            case 'driver':
+              if (driverStatus === 'enabled') {
+                navigate('/driver');
+                swal("Success", res.data.message, "success");
+              }else{
+                window.confirm(`you are disabled!!!`);
+              }
+              break;
+            case 'admin':
+              navigate('/adminPanel');
+              swal("Success", res.data.message, "success");
+              break;
+            default:
+              navigate('/user'); // fallback for unrecognized role
+              swal("Success", res.data.message, "success");
+              break;
+          }
         } else {
           setLogin({ ...loginInput, error: res.data.error });
         }
@@ -53,7 +71,6 @@ function Login() {
     }).catch(error => {
       console.error('CSRF error:', error);
     });
-    
   }
 
   return (
@@ -110,10 +127,10 @@ function Login() {
                     Login
                   </button>
                   {loginInput.error && (
-                      <div className="errorMessage">{loginInput.error}</div>
-                    )}
+                    <div className="errorMessage">{loginInput.error}</div>
+                  )}
                   <p className="my-2">
-                  Don't have an account? <Link to="/register" style={{ color: 'green' }} className="text-decoration-none">Register Account</Link>
+                    Don't have an account? <Link to="/register" style={{ color: 'green' }} className="text-decoration-none">Register Account</Link>
                   </p>
                 </form>
               </div>

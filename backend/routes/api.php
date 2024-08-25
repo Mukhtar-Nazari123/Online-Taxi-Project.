@@ -12,7 +12,7 @@ Route::post('register', [UserAuthController::class, 'register']);
 
 Route::post('login', [UserAuthController::class, 'login']);
 
-
+ 
 Route::group([
     "middleware" => ["auth:sanctum"]
 ],function(){

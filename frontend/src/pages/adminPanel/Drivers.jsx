@@ -1,114 +1,217 @@
-import React from 'react'
-import SearchBar from './SearchBar'
-
+import React, { useEffect, useState } from 'react';
+import "./passengers.css";
+import SearchBar from './SearchBar';
+import axios from 'axios';
+import EditDriverDoc from './EditDriverDoc';
 
 function Drivers() {
-    const driverInfo = {
-        name: ' John Doe',
-        phoneNumber: ' 0772776812',
-        licenseNumber: ' 12345ABC',
-        rating: ' 4.5',
+  const [showEdit, setShowEdit] = useState(false);
+  const [drivers, setDrivers] = useState([]);
+  const [searchQuery, setSearchQuery] = useState('');
+  const [selectedImage, setSelectedImage] = useState(null); // State for the enlarged image
+  const [selectedDriverId, setSelectedDriverId] = useState(null);
+
+  useEffect(() => {
+    const fetchDrivers = async () => {
+      try {
+        const response = await axios.get('/api/admin/drivers', {
+          headers: {
+            'Authorization': `Bearer ${localStorage.getItem('token')}`,
+            'Content-Type': 'multipart/form-data',
+          },
+        });
+        setDrivers(response.data);
+      } catch (error) {
+        console.error('Error fetching users:', error);
+      }
+    };
+    fetchDrivers();
+  }, []);
+
+  const handleDelete = (driverId) => {
+    const confirmDelete = window.confirm(`Do you want to delete this driver?`);
+    if (confirmDelete) {
+      axios.delete(`/api/admin/drivers/${driverId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then(response => {
+        // Assuming you have a 'drivers' state variable
+        setDrivers(drivers.filter(driver => driver.id !== driverId));
+        alert('Driver deleted successfully!');
+      })
+      .catch(error => {
+        console.error(error);
+        alert('Something went wrong while deleting the driver. Please try again later.');
+      });
     }
-    
+  };
+
+
+  const handleStatusClick = async (driverId) => {
+    const confirmChange = window.confirm(`Do you want to change the status of this driver?`);
+    if (confirmChange) {
+      try {
+        // 1. Determine the new status
+        const newStatus = !drivers.find(driver => driver.id === driverId).status;
+
+        // 2. Send a PUT request to your API endpoint to update the status
+        const response = await axios.put(
+          `/api/admin/drivers/${driverId}/status`, // Your API endpoint
+          { status: newStatus ? 'disabled' : 'enabled' }, // Send 'enabled' or 'disabled'
+          {
+            headers: {
+              'Authorization': `Bearer ${localStorage.getItem('token')}`,
+              'Content-Type': 'application/json', // Use application/json for data
+            },
+          }
+        );
+
+        // 3. Update the driver's status in your local state
+        setDrivers(prevDrivers => prevDrivers.map(driver =>
+          driver.id === driverId ? { ...driver, status: newStatus } : driver
+        ));
+
+        // 4. Handle success or error (optional)
+        if (response.status === 200) {
+          console.log('Driver status updated successfully!');
+        } else {
+          console.error('Error updating driver status:', response.data);
+        }
+      } catch (error) {
+        console.error('Error updating driver status:', error);
+        // Handle errors (e.g., display an error message)
+      }
+    }
+  };
+
+
+
+  const handleEditClick = (driverId) => { 
+    setSelectedDriverId(driverId); // Set the driver ID
+    setShowEdit(true);
+  };
+
+  
+  const handleSearch = (query) => {
+    setSearchQuery(query);
+  };
+
+  const filteredDrivers = drivers.filter(driver => 
+    driver.user_name.toLowerCase().includes(searchQuery.toLowerCase())
+  );
+
+  const handleImageClick = (imageUrl) => {
+    setSelectedImage(imageUrl);
+  };
+
+  const closeModal = () => {
+    setSelectedImage(null);
+  };
+
+  const EditcloseModal = () => {
+    setShowEdit(false); // Update state to hide the modal
+  };
+
   return (
     <div>
-      <SearchBar/>
-    <div className='row'>
-        <div className="card col-sm-6 col-md-4 col-lg-3 p-1">
-           <img src={"wp1898150.jpg"} className="card-img-top rounded" alt={"#1"}/>
-         <div className="card-body">
-            <div className="card-title">
-              <label>Name:</label>
-              <span>{driverInfo.name}</span>
-            </div>
-         </div>
-         <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <label>Phone Number:</label>
-              <span>{driverInfo.phoneNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>License Number:</label>
-              <span>{driverInfo.licenseNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>Rating:</label>
-              <span>{driverInfo.rating}</span>
-            </li>
-          </ul>
-        </div>
-        <div className="card col-sm-6 col-md-4 col-lg-3 p-1">
-           <img src={"wp1898150.jpg"} className="card-img-top rounded" alt={"#1"}/>
-         <div className="card-body">
-            <div className="card-title">
-              <label>Name:</label>
-              <span>{driverInfo.name}</span>
-            </div>
-         </div>
-         <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <label>Phone Number:</label>
-              <span>{driverInfo.phoneNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>License Number:</label>
-              <span>{driverInfo.licenseNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>Rating:</label>
-              <span>{driverInfo.rating}</span>
-            </li>
-          </ul>
-        </div>
-        <div className="card col-sm-6 col-md-4 col-lg-3 p-1">
-           <img src={"wp1898150.jpg"} className="card-img-top rounded" alt={"#1"}/>
-         <div className="card-body">
-            <div className="card-title">
-              <label>Name:</label>
-              <span>{driverInfo.name}</span>
-            </div>
-         </div>
-         <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <label>Phone Number:</label>
-              <span>{driverInfo.phoneNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>License Number:</label>
-              <span>{driverInfo.licenseNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>Rating:</label>
-              <span>{driverInfo.rating}</span>
-            </li>
-          </ul>
-        </div>
-        <div className="card col-sm-6 col-md-4 col-lg-3 p-1">
-           <img src={"wp1898150.jpg"} className="card-img-top rounded" alt={"#1"}/>
-         <div className="card-body">
-            <div className="card-title">
-              <label>Name:</label>
-              <span>{driverInfo.name}</span>
-            </div>
-         </div>
-         <ul className="list-group list-group-flush">
-            <li className="list-group-item">
-              <label>Phone Number:</label>
-              <span>{driverInfo.phoneNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>License Number:</label>
-              <span>{driverInfo.licenseNumber}</span>
-            </li>
-            <li className="list-group-item">
-              <label>Rating:</label>
-              <span>{driverInfo.rating}</span>
-            </li>
-          </ul>
-        </div>
-    </div>
-    </div>
-  )
-}
+      <div className='container-fluid'>
+        {/* Existing code for the dashboard cards */}
+      </div>
 
-export default Drivers
+      <div>
+        <div className='container-fluid'>
+          <SearchBar onSearch={handleSearch} />
+        </div>
+        <div className='container-fluid'>
+          <div className="table-responsive">
+            <table className="passengerTable table caption-top table-hover fs-4">
+              <caption className='text-white fs-3'>Drivers</caption>
+              <thead>
+                <tr>
+                  <th className='th' scope="col">Id</th>
+                  <th className='th' scope="col">Name</th>
+                  <th className='th' scope="col">Photo</th>
+                  <th className='th' scope="col">Id Card</th>
+                  <th className='th' scope="col">License</th>
+                  <th className='th' scope="col">Address</th>
+                  <th className='th' scope="col">Status</th>
+                  <th className='update' scope="col">Options</th>
+                </tr>
+              </thead>
+              <tbody>
+                {filteredDrivers.length ? (
+                  filteredDrivers.map((driver, index) => (
+                    <tr key={index}>
+                      <th scope="row">{driver.id}</th>
+                      <td>{driver.user_name}</td>
+                      <td>
+                      <img 
+                        src={`http://localhost:8000${driver.your_photo}`} 
+                        alt="Your Img" 
+                        width={40} 
+                        height={40}
+                        onClick={() => handleImageClick(`http://localhost:8000${driver.your_photo}`)} 
+                      />
+                      </td>
+                      <td>
+                      <img 
+                        src={`http://localhost:8000${driver.id_card_photo}`} 
+                        alt="ID Card Img" 
+                        width={40}
+                        height={40}
+                        onClick={() => handleImageClick(`http://localhost:8000${driver.id_card_photo}`)} 
+                      />
+                      </td>
+                      <td>
+                        <img 
+                          src={`http://localhost:8000${driver.license_photo}`} 
+                          alt='license img' 
+                          width={40}
+                          height={40}
+                          onClick={() => handleImageClick(`http://localhost:8000${driver.license_photo}`)} // Trigger modal on click
+                        />
+                      </td>
+                      <td>{driver.address}</td>
+                      <td>
+                        <div className='statusButton fs-5' onClick={() => handleStatusClick(driver.id)}>
+                          {driver.status ? 'Disabled' : 'Enabled'}
+                        </div>
+                      </td>
+                      <td className='d-flex justify-content-center'>
+                        <button className='btn btn-success me-1' type='button' onClick={() => handleEditClick(driver.id)}>Edit</button>
+                        <button className='btn btn-danger' type='button' onClick={() => handleDelete(driver.id)} >Delete</button>
+                      </td>
+                    </tr>
+                  ))
+                ) : (
+                  <tr>
+                    <td colSpan="5" className="text-center">No results found.</td>
+                  </tr>
+                )}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+      {selectedImage && (
+        <div className="modal" onClick={closeModal}>
+          <div className="modal-content" onClick={(e) => e.stopPropagation()}>
+            <span className="close" onClick={closeModal}>&times;</span>
+            <img className='image' src={selectedImage} alt="Enlarged Img"/>
+          </div>
+        </div>
+      )}
+      {showEdit && (
+        <div className="modal1" onClick={(e) => e.stopPropagation()}>
+          <div className="modal-content1" onClick={(e) => e.stopPropagation()}>
+            <span className="close" onClick={EditcloseModal}>&times;</span>
+            <EditDriverDoc onClose={EditcloseModal} driverId={selectedDriverId} />
+          </div>
+        </div>
+      )}
+    </div>
+  );
+}
+export default Drivers;
