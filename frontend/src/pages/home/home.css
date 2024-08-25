@@ -1,9 +1,60 @@
-.backgroundImage {
-    margin: 0;
-    padding: 0;
-    background-image: url('/public/wp1898150.jpg');
-    background-size: cover;
-    background-position: center;
-    height: 100vh;
-    width: 100%;
+/* src/components/body.css */
+
+.hero {
+  background-image: url("E:\online_taxi_project\frontend\src\assets\images\kabul-city.jpg"); /* Replace with your image path */
+  background-size: cover;
+  background-position: center;
+  padding: 100px 0;
+  color: white;
+}
+
+.hero .cta-button {
+  background-color: #ffcc00;
+  color: black;
+  padding: 15px 30px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
+  cursor: pointer;
+}
+
+.hero .cta-button:hover {
+  background-color: #e6b800;
+}
+
+/* Retain the rest of your styles */
+.feature-icon {
+  font-size: 3rem;
+  color: #ff6600;
+}
+
+.vehicle-type img {
+  border-radius: 50%;
+}
+
+.city-card {
+  position: relative;
+}
+
+.city-card img {
+  border-radius: 5px;
+}
+
+.city-card-overlay {
+  position: absolute;
+  bottom: 10px;
+  left: 10px;
+  background: rgba(0, 0, 0, 0.6);
+  color: white;
+  padding: 5px 10px;
+  border-radius: 5px;
+}
+
+.cta-button {
+  background-color: #ff6600;
+  color: white;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  font-size: 1.2rem;
 }
