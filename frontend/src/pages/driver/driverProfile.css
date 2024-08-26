@@ -44,3 +44,12 @@ body {
     box-shadow: 0 8px 16px rgba(0,0,0,0.2);
   }
   
+  .close-btn2 {
+    display: flex;
+    position: absolute;
+    top: -5px;
+    right: 15px;
+    font-size: 34px;
+    color: #333;
+    cursor: pointer;
+}

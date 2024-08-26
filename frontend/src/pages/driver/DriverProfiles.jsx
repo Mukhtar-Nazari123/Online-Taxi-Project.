@@ -1,7 +1,9 @@
 import React, { useState, useEffect, useRef} from 'react';
-import { Tabs, Tab, Form, Button, Card, ListGroup, Alert } from 'react-bootstrap';
+import { Tabs, Tab, Form, Button, Card , Alert } from 'react-bootstrap';
 import './driverProfile.css';
 import axios from 'axios';
+import ChangePwd from './ChangePwd';
+import UpdateCarInfo from './UpdateCarInfo';
 
 const DriverProfiles = () => {
     const driverId = localStorage.getItem('driver_id');
@@ -15,13 +17,6 @@ const DriverProfiles = () => {
         photo: '',
       });
   const [driver, setDriver] = useState({
-    vehicle: {
-      make: 'Toyota',
-      model: 'Camry',
-      year: '2019',
-      registration: 'ABC 1234',
-      insurance: 'INS-5678-90',
-    },
     license: {
       number: 'DL1234567',
       expiry: '2025-12-31',
@@ -32,21 +27,21 @@ const DriverProfiles = () => {
   const [activeTab, setActiveTab] = useState('personal');
   const [showAlert, setShowAlert] = useState(false);
   const containerRef = useRef(null);
+  const [showContainer, setShowContainer] = useState(true);
+
 
   useEffect(() => {
     const handleClickOutside = (event) => {
       if (containerRef.current && !containerRef.current.contains(event.target)) {
-        // User clicked outside the component, close it
-        // You can add your logic here to close the component
-        console.log('Clicked outside the component');
+        setShowContainer(false);
       }
     };
-  
     document.addEventListener('mousedown', handleClickOutside);
+
     return () => {
       document.removeEventListener('mousedown', handleClickOutside);
     };
-  }, [containerRef]);
+  }, []);
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -56,16 +51,6 @@ const DriverProfiles = () => {
     }));
   };
 
-  const handleVehicleChange = (event) => {
-    const { name, value } = event.target;
-    setDriver(prevState => ({
-      ...prevState,
-      vehicle: {
-        ...prevState.vehicle,
-        [name]: value
-      }
-    }));
-  };
 
   const handleAvailabilityToggle = () => {
     setDriver(prevState => ({
@@ -99,13 +84,20 @@ const DriverProfiles = () => {
     fetchDriverData();
   }, [driverId]);
 
+  const handleClose = () => {
+    setShowContainer(false);
+  };
+
   if (!driverData) {
     return <div>Loading...</div>;
   }
 
  
   return (
-    <div className="fullBody container mt-5">
+    (showContainer && <div className="fullBody container mt-5" ref={containerRef}>
+        <div className="close-btn2" onClick={handleClose}>
+            &times;
+      </div>
       <div className="row">
         <div className="col-md-4 text-center mb-4">
           <img src={`http://localhost:8000${driverData.photo}`} alt="Driver profile img" className="profile-picture mb-3" />
@@ -142,6 +134,10 @@ const DriverProfiles = () => {
                       <Form.Control type="email" name="email" value={driverData.email} onChange={handleInputChange} />
                     </Form.Group>
                     <Form.Group className="mb-3">
+                      <Form.Label>Your Photo</Form.Label>
+                      <Form.Control type="file" name="photo" onChange={handleInputChange} />
+                    </Form.Group>
+                    <Form.Group className="mb-3">
                       <Form.Label>Address</Form.Label>
                       <Form.Control as="textarea" name="address" value={driverData.address} onChange={handleInputChange} />
                     </Form.Group>
@@ -153,65 +149,21 @@ const DriverProfiles = () => {
             <Tab eventKey="vehicle" title="Vehicle Info">
               <Card>
                 <Card.Body>
-                  <h3>Vehicle Information</h3>
-                  <Form onSubmit={handleSubmit}>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Make</Form.Label>
-                      <Form.Control type="text" name="make" value={driver.vehicle.make} onChange={handleVehicleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Model</Form.Label>
-                      <Form.Control type="text" name="model" value={driver.vehicle.model} onChange={handleVehicleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Registration Number</Form.Label>
-                      <Form.Control type="text" name="registration" value={driver.vehicle.registration} onChange={handleVehicleChange} />
-                    </Form.Group>
-                    <Form.Group className="mb-3">
-                      <Form.Label>Insurance Details</Form.Label>
-                      <Form.Control type="text" name="insurance" value={driver.vehicle.insurance} onChange={handleVehicleChange} />
-                    </Form.Group>
-                    <Form.Control type="submit" className='bg-primary' value={'Update Vehicle Info'} variant="primary"/>
-                  </Form>
+                    <UpdateCarInfo/>
                 </Card.Body>
               </Card>
             </Tab>
-            <Tab eventKey="documents" title="Documents">
+            <Tab eventKey="documents" title="Change Password">
               <Card>
                 <Card.Body>
-                  <h3>Documents</h3>
-                  <ListGroup variant="flush">
-                    <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h5>Driver's License</h5>
-                        <p className="mb-0">License Number: {driver.license.number}</p>
-                        <p className="mb-0">Expiry Date: {driver.license.expiry}</p>
-                      </div>
-                      <span className="document-status verified">Verified</span>
-                    </ListGroup.Item>
-                    <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h5>Vehicle Registration</h5>
-                        <p className="mb-0">Registration Number: {driver.vehicle.registration}</p>
-                      </div>
-                      <span className="document-status pending">Pending Verification</span>
-                    </ListGroup.Item>
-                    <ListGroup.Item className="d-flex justify-content-between align-items-center">
-                      <div>
-                        <h5>Insurance Document</h5>
-                        <p className="mb-0">Policy Number: {driver.vehicle.insurance}</p>
-                      </div>
-                      <span className="document-status verified">Verified</span>
-                    </ListGroup.Item>
-                  </ListGroup>
-                  <Form.Control type="submit" className='bg-primary' value={'Manage Documents'} variant="primary"/>
+                  <ChangePwd/>
                 </Card.Body>
               </Card>
             </Tab>
           </Tabs>
         </div>
       </div>
-    </div>
+    </div>)
   );
 };
 

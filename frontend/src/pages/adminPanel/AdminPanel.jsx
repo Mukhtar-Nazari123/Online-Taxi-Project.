@@ -7,6 +7,7 @@ import Nav from './Nav'
 import AdminHome from './AdminHome'
 import Drivers from './Drivers'
 import Trips from './Trips'
+import ShowCarInfo from './ShowCarInfo'
 
 
 function AdminPanel() {
@@ -25,6 +26,9 @@ function AdminPanel() {
   const DriverComponent = () => {
     SetOpenOptions("driverComponent");
   }
+  const CarComponent = () => {
+    SetOpenOptions("carComponent");
+  }
   const TripComponent = () => {
     SetOpenOptions("tripComponent");
   }
@@ -37,6 +41,7 @@ function AdminPanel() {
         AdminHomeComponent = {AdminHomeComponent} 
         PassengerComponent = {PassengerComponent}
         DriverComponent = {DriverComponent}
+        CarComponent = {CarComponent}
         TripComponent = {TripComponent}
         />
         </div> }
@@ -56,6 +61,11 @@ function AdminPanel() {
           {openOptions === "driverComponent" && (
             <div>
               <Drivers/>
+          </div>
+          )}
+          {openOptions === "carComponent" && (
+            <div>
+              <ShowCarInfo/>
           </div>
           )}
           {openOptions === "tripComponent" && (

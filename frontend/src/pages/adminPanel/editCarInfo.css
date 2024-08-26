@@ -1,0 +1,23 @@
+.carCard {
+    position: fixed;
+    background-color: aliceblue;
+    width: 600px;
+    height: 515px;
+    border-radius: 10px;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    padding: 15px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+    transition: box-shadow 0.3s ease-in-out;
+  }
+
+.close-btn3 {
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    font-size: 34px;
+    color: #333;
+    cursor: pointer;
+}

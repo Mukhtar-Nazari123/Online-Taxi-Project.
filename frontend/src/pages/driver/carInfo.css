@@ -1,0 +1,27 @@
+.cardBody {
+    position: absolute;
+    background-color: aliceblue;
+    width: 600px;
+    height: 320px;
+    border-radius: 10px;
+    z-index: 1000;
+    left: 50%;
+    top: 50%;
+    padding: 15px;
+    transform: translate(-50%, -50%);
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.3);
+    transition: box-shadow 0.3s ease-in-out;
+}
+
+.cardBody:hover {
+    box-shadow: 0 0 30px rgba(0, 0, 0, 0.5);
+}
+
+.close-btn {
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    font-size: 34px;
+    color: #333;
+    cursor: pointer;
+}

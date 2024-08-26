@@ -37,28 +37,17 @@ const User = () => {
     setDestinationInput(value);
     await handleInputChange(value, "destination");
   };
-  // Autocomplete
-  // Function to fetch location suggestions based on user input
+
   const handleInputChange = async (inputValue, type) => {
-    try {
-      // Make an API call to Nominatim OpenStreetMap to fetch suggestions
-      const response = await axios.get(
-        `https://nominatim.openstreetmap.org/search`,
-        {
-          params: {
-            q: inputValue,
-            format: "json",
-            limit: 10,
-            bounded: 1,
-            viewbox: "68.4716,34.1159,69.4942,34.8528",
-          },
-        }
-      );
+      try {
+        const response = await axios.get('/api/nominatim', {
+          params: { q: inputValue },
+      });
 
       // Map the response data to an array of suggestions, prioritizing shorter names and extracting the most relevant part
       const suggestions = response.data
-        .sort((a, b) => a.display_name.length - b.display_name.length) // Sort by display name length
-        .slice(0, 10) // Take the first 10 results
+        .sort((a, b) => a.display_name.length - b.display_name.length)
+        .slice(0, 10)
         .map((result) => {
           // Extract the most relevant part of the display name
           const relevantParts = result.display_name.split(",").slice(0, 2);
@@ -123,8 +112,6 @@ const User = () => {
                 <h2>Get Ride</h2>
                 <form action="">
                   <div>
-                    {" "}
-                    {/*Form for defining user origin and destination*/}{" "}
                   </div>
                   <div className="form-group">
                     <IconContext.Provider

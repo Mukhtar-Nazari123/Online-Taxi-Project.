@@ -114,7 +114,6 @@ class UserAuthController extends Controller
     public function login(Request $request)
     {
         try {
-            // Validate the user's credentials
             $validateUser = Validator::make($request->all(), [
                 'email' => 'required|string|email',
                 'password' => 'required|string',
@@ -128,24 +127,22 @@ class UserAuthController extends Controller
                 ], 401);
             }
 
-            // Attempt to authenticate the user
             if (!Auth::attempt($request->only(['email', 'password']))) {
                 return response()->json([
                     'status' => false,
                     'error' => 'Invalid email or password. Please try again.'
                 ], 401);
             }
-
-            // Retrieve the authenticated user
-            $user = Auth::user(); // Get the authenticated user directly
-
-            // Find the associated driver (assuming you have a 'driver' relationship in your User model)
+            $user = Auth::user();
             $driver = $user->driver;
-
-            $driverStatus = 'N/A'; // Default status if no driver is found
+            $driverStatus = 'N/A';
+            $driverId = 'N/A';
 
             if ($driver) {
                 $driverStatus = $driver->status; // Get the driver's status
+            }
+            if ($driver) {
+                $driverId = $driver->id; // Get the driver's status
             }
 
             return response()->json([
@@ -155,7 +152,8 @@ class UserAuthController extends Controller
                 'name' => $user->name,
                 'role' => $user->role,  // Include user role
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
-                'driverStatus' => $driverStatus
+                'driverStatus' => $driverStatus,
+                'driverId' => $driverId
             ], 200);
 
         } catch (\Throwable $th) {
