@@ -32,8 +32,10 @@ function Login() {
           console.log('request sent!!');
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('name', res.data.name);
-
+          localStorage.setItem('id', res.data.id);
+          localStorage.setItem('driver_id', res.data.driverId);
           // Set token expiration (e.g., 7 days)
+          
           const expiresIn = 7;
           const expirationDate = new Date(new Date().getTime() + expiresIn * 24 * 60 * 60 * 1000);
           localStorage.setItem('tokenExpiration', expirationDate.toISOString());
@@ -53,7 +55,7 @@ function Login() {
               swal("Success", res.data.message, "success");
               break;
             default:
-              navigate('/user'); // fallback for unrecognized role
+              navigate('/user'); 
               swal("Success", res.data.message, "success");
               break;
           }

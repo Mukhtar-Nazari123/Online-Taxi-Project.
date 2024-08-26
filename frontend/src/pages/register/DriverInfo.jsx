@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import CarInfo from './CarInfo';
+import CarInfo from '../driver/CarInfo';
 
 function DriverInfo() {
   const [files, setFiles] = useState({

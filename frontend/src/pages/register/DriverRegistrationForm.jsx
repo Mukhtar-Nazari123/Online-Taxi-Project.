@@ -39,7 +39,7 @@ const DriverRegistrationForm = () => {
         if (res.data.status === 200) {
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('name', res.data.name);
-          localStorage.setItem('id', res.data.id); // Store user ID
+          localStorage.setItem('driver_id', res.data.id); // Store user ID
 
           // Set token expiration (e.g., 7 days)
           const expiresIn = 7;

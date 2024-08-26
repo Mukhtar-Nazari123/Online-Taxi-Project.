@@ -1,15 +1,18 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import axios from 'axios';
+import './carInfo.css'
 
 function CarInfo() {
   const [formData, setFormData] = useState({
     driver_id: localStorage.getItem('driver_id'),
     model: '',
-    year: '',
-    plate_number: '',  // Keeping it as plateNo
-    color: 'White',
+    year: '2024',
+    plate_number: '',
+    color: 'white',
   });
   const [message, setMessage] = useState('');
+  const [showContainer, setShowContainer] = useState(true);
+  const containerRef = useRef(null);
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -23,21 +26,41 @@ function CarInfo() {
     try {
       const response = await axios.post('/api/car/info', formData, {
         headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-          },
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
       });
       setMessage(response.data.message);
     } catch (error) {
-      const errorMsg = error.response?.data?.errors 
+      const errorMsg = error.response?.data?.errors
         ? Object.values(error.response.data.errors).flat().join(', ')
         : 'An unexpected error occurred.';
       setMessage(errorMsg);
     }
   };
 
+  const handleClose = () => {
+    setShowContainer(false);
+  };
+
+  useEffect(() => {
+    const handleClickOutside = (event) => {
+      if (containerRef.current && !containerRef.current.contains(event.target)) {
+        setShowContainer(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div className='d-flex justify-content-center'>
+    (showContainer && <div className='cardBody d-flex justify-content-center' ref={containerRef}>
       <div className='col-12 mt-2'>
+      <div className="close-btn" onClick={handleClose}>
+            &times;
+      </div>
       <form onSubmit={handleSubmit}>
         <fieldset>
           <legend className='fs-3 fw-bold'>Car Information</legend>
@@ -109,14 +132,14 @@ function CarInfo() {
               </select>
             </div>
           </div>
-          {message && <div>{message}</div>}
+          {message && <div className='text-success'>{message}</div>}
           <div className="mt-3">
-            <button type="submit" className="btn btn-primary">Submit</button>
+            <button type="submit" className="btn btn-primary">Save</button>
           </div>
         </fieldset>
       </form>
     </div>
-    </div>
+    </div>)
   );
 }
 

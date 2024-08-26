@@ -4,15 +4,22 @@ import { CgProfile } from "react-icons/cg";
 import { IconContext } from "react-icons";
 import { LuLogOut } from "react-icons/lu";
 import { LuClipboardEdit } from "react-icons/lu";
-import { GrContactInfo } from "react-icons/gr";
+import { FaCar } from "react-icons/fa";
 import MapSection from '../../components/MapSection';
 import DriverProfiles from './DriverProfiles';
+import CarInfo from './CarInfo';
 
 function DriverHome(Toggle) {
-    const [showInfo, setShowInfo] = useState(false);
+    const [showEditInfo, setEditInfo] = useState(false);
+    const [showCarInfo, setshowCarInfo] = useState(false);
 
-  const handleInfoClick = () => {
-    setShowInfo(!showInfo);
+
+  const handleEditInfoClick = () => {
+    setEditInfo(!showEditInfo);
+  };
+
+  const handleCarInfoClick = () => {
+    setshowCarInfo(!showCarInfo);
   };
 
   return (
@@ -34,15 +41,15 @@ function DriverHome(Toggle) {
                 </a>
                 <ul className="dropdown-menu dropdown-menu-end" aria-labelledby="navbarScrollingDropdown">
                     <li><a className="dropdown-item" href={"#1"}>
-                        <div className='d-flex gap-2' onClick={handleInfoClick}>
+                        <div className='d-flex gap-2' onClick={handleCarInfoClick}>
                         <IconContext.Provider value={{size: '20px',color: 'dark' , className: "global-class-name" }}>
-                            <GrContactInfo />
+                            <FaCar />
                         </IconContext.Provider>
-                        <h6>Info</h6>
+                        <h6>Car Info</h6>
                         </div>
                     </a></li>
                     <li><a className="dropdown-item" href={"#1"}>
-                        <div className='d-flex gap-2'>
+                        <div className='d-flex gap-2' onClick={handleEditInfoClick}>
                         <IconContext.Provider value={{size: '20px',color: 'dark' , className: "global-class-name" }}>
                              <LuClipboardEdit />
                         </IconContext.Provider>
@@ -62,7 +69,8 @@ function DriverHome(Toggle) {
                 </li>
             </div>
         </nav>
-        {showInfo && <DriverProfiles />}
+        {showEditInfo && <DriverProfiles />}
+        {showCarInfo && <CarInfo />}
         <div className='px-3'>
             <MapSection/>
         </div>

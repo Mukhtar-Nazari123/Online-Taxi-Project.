@@ -7,7 +7,7 @@ use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\DriverController;
 use App\Http\Controllers\API\CarController;
-
+use Illuminate\Support\Facades\Http;
 
 
 
@@ -41,6 +41,7 @@ Route::prefix('admin')
         Route::get('/drivers/{driver}', [DriverController::class, 'show']);
         Route::delete('/drivers/{id}', [AdminController::class, 'deleteDriver']);
         Route::put('/drivers/{driver}', [DriverController::class, 'updateDriverDoc']);
+        Route::get('/carsInfo', [AdminController::class, 'carsInfo']);
     });
 
 
@@ -57,10 +58,33 @@ Route::prefix('car')
     ->middleware('auth:sanctum')
     ->group(function () {
         Route::post('/info', [CarController::class, 'store']);
+        Route::get('/showInfo/{driver_id}', [CarController::class, 'showInfo']);
+        Route::put('/update/{car_id}', [CarController::class, 'update']);
+
     });
 
 
 
 
+Route::get('/nominatim', function (Request $request) {
+    $query = $request->input('q');
 
+    if (empty($query)) {
+        return response()->json(['error' => 'Query parameter is required'], 400);
+    }
 
+    $boundingBox = '68.4716,34.1159,69.4942,34.8528';
+    $response = Http::get('https://nominatim.openstreetmap.org/search', [
+        'q' => $query,
+        'format' => 'json',
+        'limit' => 10,
+        'viewbox' => $boundingBox,
+        'bounded' => 1,
+    ]);
+
+    if ($response->failed()) {
+        return response()->json(['error' => 'API request failed'], 500);
+    }
+
+    return response()->json($response->json());
+});

@@ -8,7 +8,7 @@ function Drivers() {
   const [showEdit, setShowEdit] = useState(false);
   const [drivers, setDrivers] = useState([]);
   const [searchQuery, setSearchQuery] = useState('');
-  const [selectedImage, setSelectedImage] = useState(null); // State for the enlarged image
+  const [selectedImage, setSelectedImage] = useState(null); 
   const [selectedDriverId, setSelectedDriverId] = useState(null);
 
   useEffect(() => {

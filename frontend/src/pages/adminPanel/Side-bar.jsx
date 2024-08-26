@@ -2,7 +2,7 @@ import React from 'react'
 import "./sideBar.css"
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-function Sidebar({AdminHomeComponent, PassengerComponent, DriverComponent, TripComponent}) {
+function Sidebar({AdminHomeComponent, PassengerComponent, DriverComponent,CarComponent, TripComponent}) {
   return (
         <div className='bg-white sidebar p-1'>
          <div className='text-center'>
@@ -30,6 +30,10 @@ function Sidebar({AdminHomeComponent, PassengerComponent, DriverComponent, TripC
             <a className='list-group-item py-2' onClick={DriverComponent} href="#1">
                 <i className="bi bi-person fs-4 me-2"></i>
                 <span>Drivers</span>
+            </a>
+            <a className='list-group-item py-2' onClick={CarComponent} href="#1">
+                <i className="bi bi-person fs-4 me-2"></i>
+                <span>Cars</span>
             </a>
             <a className='list-group-item py-2' onClick={TripComponent} href="#1">
                 <i className="bi bi-map fs-4 me-2"></i>
