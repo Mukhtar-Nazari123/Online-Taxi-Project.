@@ -4,6 +4,7 @@ import './driverProfile.css';
 import axios from 'axios';
 import ChangePwd from './ChangePwd';
 import UpdateCarInfo from './UpdateCarInfo';
+import GetDriverLocation from './GetDriverLocation';
 
 const DriverProfiles = () => {
     const driverId = localStorage.getItem('driver_id');
@@ -11,17 +12,13 @@ const DriverProfiles = () => {
         name: '',
         email: '',
         phone: '',
-        id: '',
-        status: 'Active',
+        id: '',  
         address:'',
         photo: '',
       });
   const [driver, setDriver] = useState({
-    license: {
-      number: 'DL1234567',
-      expiry: '2025-12-31',
-    },
     availability: true,
+    status: 'Active',
   });
 
   const [activeTab, setActiveTab] = useState('personal');
@@ -146,10 +143,10 @@ const DriverProfiles = () => {
                 </Card.Body>
               </Card>
             </Tab>
-            <Tab eventKey="vehicle" title="Vehicle Info">
+            <Tab eventKey="vehicle" title="Vehicle Info" >
               <Card>
                 <Card.Body>
-                    <UpdateCarInfo/>
+                  {activeTab === 'vehicle' && <UpdateCarInfo />}
                 </Card.Body>
               </Card>
             </Tab>
@@ -158,6 +155,9 @@ const DriverProfiles = () => {
                 <Card.Body>
                   <ChangePwd/>
                 </Card.Body>
+                <GetDriverLocation
+                status = {driver.availability}
+                />
               </Card>
             </Tab>
           </Tabs>

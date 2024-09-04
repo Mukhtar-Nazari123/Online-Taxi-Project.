@@ -5,12 +5,13 @@ import Home from "./pages/home/Home";
 import User from "./pages/userPage/User";
 import AdminPanel from "./pages/adminPanel/AdminPanel";
 import RegistrationForm from "./pages/register/RegistrationForm";
-
+import "@fortawesome/fontawesome-free/css/all.min.css";
 import Login from "./pages/login/Login";
 import DriverRegistrationForm from "./pages/register/DriverRegistrationForm";
 import DriverInfo from "./pages/register/DriverInfo";
 import DriverHome from "./pages/driver/DriverHome";
 import DriverProfiles from "./pages/driver/DriverProfiles";
+// import "./assets/fonts"; // Import your font CSS here
 
 function App() {
   return (

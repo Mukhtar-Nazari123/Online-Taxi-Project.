@@ -7,6 +7,8 @@ use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\DriverController;
 use App\Http\Controllers\API\CarController;
+use App\Http\Controllers\API\DriverLocationController;
+use App\Http\Controllers\API\TripController;
 use Illuminate\Support\Facades\Http;
 
 
@@ -50,8 +52,9 @@ Route::prefix('driver')
     ->group(function () {
         Route::post('/docs', [DriverController::class, 'store']);
         Route::get('/profile/{driver}', [DriverController::class, 'driverInfo']);
-
+        Route::post('/{driverId}/location', [DriverLocationController::class, 'saveLocation']);
     });
+
 
 
 Route::prefix('car')
@@ -61,6 +64,12 @@ Route::prefix('car')
         Route::get('/showInfo/{driver_id}', [CarController::class, 'showInfo']);
         Route::put('/update/{car_id}', [CarController::class, 'update']);
 
+    });
+
+
+Route::prefix('trip')
+    ->group(function () {
+        Route::post('/tripRequest', [TripController::class, 'createRequest']);
     });
 
 

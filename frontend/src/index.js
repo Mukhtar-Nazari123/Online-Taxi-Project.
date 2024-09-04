@@ -11,7 +11,10 @@ import App from "./App";
 import reportWebVitals from "./reportWebVitals";
 import "leaflet/dist/leaflet.css";
 import "./index.css";
+
 // import "@fortawesome/fontawesome-free/css/all.min.css";
+import "./assets/fonts/fa-solid-900.ttf"; // or the correct font file if available
+import "./assets/fonts/fa-solid-900.woff2";
 
 import "bootstrap/dist/css/bootstrap.min.css";
 

@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import axios from 'axios';
-import CarInfo from '../driver/CarInfo';
+
 
 function DriverInfo() {
   const [files, setFiles] = useState({
@@ -109,7 +109,6 @@ function DriverInfo() {
             <input type="submit" value={loading ? 'Submitting...' : 'Submit'} className="bg-primary form-control mt-2" disabled={loading} />
           </div>
         </form>
-        <CarInfo/>
       </div>
     </div>
   );

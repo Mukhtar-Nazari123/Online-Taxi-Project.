@@ -1,5 +1,17 @@
+/* src/styles/global.css */
+/* FontAwesome font-face declarations */
+
+@font-face {
+  font-family: "FontAwesome";
+  font-weight: 900;
+  src: url("./assets/fonts/fa-solid-900.woff2") format("woff2"),
+    url("./assets/fonts/fa-solid-900.ttf") format("truetype");
+}
+
+/* Your other global styles */
 body {
-    margin: 0;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+  font-family: Arial, sans-serif, fa-solid-900, fa-solid-900;
+  margin: 0;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
 }

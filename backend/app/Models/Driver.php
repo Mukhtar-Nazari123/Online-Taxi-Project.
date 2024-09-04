@@ -31,4 +31,14 @@ class Driver extends Model
     {
         return $this->hasOne(Car::class);
     }
+
+    public function location()
+    {
+        return $this->hasOne(DriverLocation::class);
+    }
+
+    public function trips()
+    {
+        return $this->hasMany(Trip::class);
+    }
 }
