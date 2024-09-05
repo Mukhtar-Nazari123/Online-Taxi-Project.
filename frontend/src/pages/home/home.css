@@ -1,5 +1,3 @@
-/* src/components/body.css */
-
 .hero {
   background-image: url("../../assets/images/kabul-city.jpg"); /* Replace with your image path */
   background-size: cover;
@@ -22,14 +20,59 @@
   background-color: #e6b800;
 }
 
-/* Retain the rest of your styles */
+/* Container for the feature section */
 .feature-icon {
   font-size: 3rem;
-  color: #ff6600;
+  color: #333; /* Default color if no specific class is applied */
 }
 
-.vehicle-type img {
-  border-radius: 50%;
+/* Colors for specific icons */
+.feature-icon.fast-pickup {
+  color: #007bff; /* Blue for fast pickup */
+}
+
+.feature-icon.safe-secure {
+  color: #28a745; /* Green for safety and security */
+}
+
+.feature-icon.affordable-rates {
+  color: #ff6600; /* Orange for affordable rates */
+}
+
+/* Container for the icons */
+.vehicle-type-container {
+  display: flex;
+  justify-content: space-around; /* Distribute space between icons */
+  align-items: center; /* Center items vertically */
+  flex-wrap: wrap; /* Wrap to the next line if needed */
+}
+
+/* Style for individual vehicle type boxes */
+.vehicle-type {
+  text-align: center;
+  flex: 1; /* Allows items to grow and shrink equally */
+  margin: 1rem; /* Spacing between items */
+}
+
+.feature-icon.economy {
+  color: #28a745; /* Green for economy */
+}
+
+.feature-icon.comfort {
+  color: #17a2b8; /* Blue for comfort */
+}
+
+.feature-icon.premium {
+  color: #ffc107; /* Gold for premium */
+}
+
+/* Optional color for a standard or electric vehicle type */
+.feature-icon.standard {
+  color: #6c757d; /* Gray for standard */
+}
+
+.feature-icon.electric {
+  color: #20c997; /* Teal for electric/hybrid */
 }
 
 .city-card {
@@ -57,4 +100,18 @@
   border: none;
   border-radius: 5px;
   font-size: 1.2rem;
+}
+
+/* Optional: Style for the feature section */
+section.py-5 {
+  background-color: #f8f9fa; /* Light background for better readability */
+}
+
+.text-center h3 {
+  margin-top: 1rem;
+  margin-bottom: 0.5rem;
+}
+
+.text-center p {
+  color: #6c757d; /* Gray text for better readability */
 }
