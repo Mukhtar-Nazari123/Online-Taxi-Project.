@@ -7,7 +7,11 @@ use App\Http\Controllers\API\UserAuthController;
 use App\Http\Controllers\API\AdminController;
 use App\Http\Controllers\API\DriverController;
 use App\Http\Controllers\API\CarController;
+use App\Http\Controllers\API\DriverLocationController;
+use App\Http\Controllers\API\TripController;
 use Illuminate\Support\Facades\Http;
+use App\Http\Controllers\NotificationController;
+use Illuminate\Support\Facades\Broadcast;
 
 
 
@@ -40,7 +44,7 @@ Route::prefix('admin')
         Route::get('/drivers', [AdminController::class, 'allDrivers']);
         Route::get('/drivers/{driver}', [DriverController::class, 'show']);
         Route::delete('/drivers/{id}', [AdminController::class, 'deleteDriver']);
-        Route::put('/drivers/{driver}', [DriverController::class, 'updateDriverDoc']);
+        Route::post('/drivers/{driver}', [DriverController::class, 'updateDriverDoc']);
         Route::get('/carsInfo', [AdminController::class, 'carsInfo']);
     });
 
@@ -50,8 +54,10 @@ Route::prefix('driver')
     ->group(function () {
         Route::post('/docs', [DriverController::class, 'store']);
         Route::get('/profile/{driver}', [DriverController::class, 'driverInfo']);
-
+        Route::post('/updateProfile/{driver}', [DriverController::class, 'updateDriverInfo']);
+        Route::post('/{driverId}/location', [DriverLocationController::class, 'saveLocation']);
     });
+
 
 
 Route::prefix('car')
@@ -63,6 +69,15 @@ Route::prefix('car')
 
     });
 
+
+Route::prefix('trip')
+    ->group(function () {
+        Route::post('/tripRequest', [TripController::class, 'createRequest']);
+    });
+
+
+
+Route::get('/notifications', [NotificationController::class, 'sendNotification']);
 
 
 

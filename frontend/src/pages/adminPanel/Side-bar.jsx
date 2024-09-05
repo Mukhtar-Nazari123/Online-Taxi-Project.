@@ -1,8 +1,18 @@
 import React from 'react'
 import "./sideBar.css"
+import { useNavigate} from "react-router-dom";
 import 'bootstrap-icons/font/bootstrap-icons.css';
 
-function Sidebar({AdminHomeComponent, PassengerComponent, DriverComponent,CarComponent, TripComponent}) {
+function Sidebar({AdminHomeComponent, PassengerComponent, DriverComponent,CarComponent, TripComponent, MessageComponent}) {
+    const navigate = useNavigate();
+    
+    const handleLogout = () => {
+        const confirmLogout = window.confirm(`Do you want to log out?`);
+    if (confirmLogout) {
+      localStorage.removeItem('token');
+        navigate('/');
+      };
+    }
   return (
         <div className='bg-white sidebar p-1'>
          <div className='text-center'>
@@ -39,7 +49,16 @@ function Sidebar({AdminHomeComponent, PassengerComponent, DriverComponent,CarCom
                 <i className="bi bi-map fs-4 me-2"></i>
                 <span>Trips</span>
             </a>
-            <a className='list-group-item py-2' href="#1">
+            <a className='list-group-item py-2' onClick={MessageComponent} href="#1">
+                <i class="bi bi-chat-left-dots fs-4 me-2"></i>
+                <span>Messages</span>
+            </a>
+            <a className='list-group-item py-2' href="#1"
+            onClick={(e) => {
+                e.preventDefault();
+                handleLogout();
+              }}
+            >
                 <i className='bi bi-power fs-4 me-2'></i>
                 <span>Loguot</span>
             </a>

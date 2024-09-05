@@ -17,11 +17,11 @@ function App() {
     <div className="App">
       <BrowserRouter>
         <Routes>
-          <Route path="/login" element={<Login />} />
           <Route path="/" element={<Home />} />
           <Route path="/user" element={<User />} />
           <Route path="/adminPanel" element={<AdminPanel />} />
           <Route path="/register" element={<RegistrationForm />} />
+          <Route path="/login" element={<Login />} />
           <Route path="/driverRegister" element={<DriverRegistrationForm />} />
           <Route path="/driver" element={<DriverHome />} />
           <Route path="/driverInfo" element={<DriverInfo />} />

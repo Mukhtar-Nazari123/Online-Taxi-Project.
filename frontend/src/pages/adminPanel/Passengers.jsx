@@ -70,10 +70,10 @@ function Passengers() {
               <thead>
                 <tr>
                   <th className='th' scope="col">Id</th>
-                  <th className='th' scope="col">Name</th>
+                  <th className='th' scope="col">Full Name</th>
                   <th className='th' scope="col">Email</th>
                   <th className='th' scope="col">Phone</th>
-                  <th className='update' scope="col">Options</th>
+                  <th className='update' scope="col">Option</th>
                 </tr>
               </thead>
               <tbody>
@@ -85,7 +85,6 @@ function Passengers() {
                       <td>{user.email}</td>
                       <td>{user.phone_number}</td>
                       <td className='d-flex justify-content-center'>
-                        <button className='btn btn-success me-1' type='button'>Edit</button>
                         <button className='btn btn-danger' type='button' onClick={() => handleDelete(user.id)}>Delete</button>
                       </td>
                     </tr>

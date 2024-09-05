@@ -53,7 +53,7 @@ const Footer1 = () => {
                   rows={3}
                 />
               </Form.Group>
-              <Button type="submit" className="btn-primary">
+              <Button type="submit" className="emailBtn btn btn-primary" style={{width:'40px'}}>
                 Send
               </Button>
             </Form>
@@ -63,10 +63,10 @@ const Footer1 = () => {
         <Row>
           <Col className="text-center">
             <h5>Connect and Navigate</h5>
-            <div className="social-icons mb-4">
+            <div className="social-icons mb-4 ">
               <a
                 href="https://facebook.com/sinataxicompany"
-                className="me-3"
+                className="me-3 "
                 aria-label="Facebook"
               >
                 <FaFacebookF />
@@ -96,35 +96,35 @@ const Footer1 = () => {
             <div className="action-icons">
               <a
                 href="https://websim.example.com/sina-taxi-company/"
-                className="me-3"
+                className="me-3 text-decoration-none"
                 aria-label="Home"
               >
                 <FaHome /> Home
               </a>
               <a
                 href="https://websim.example.com/sina-taxi-company/book-ride"
-                className="me-3"
+                className="me-3 text-decoration-none"
                 aria-label="Book a Ride"
               >
                 <FaCar /> Ride
               </a>
               <a
                 href="https://websim.example.com/sina-taxi-company/become-driver"
-                className="me-3"
+                className="me-3 text-decoration-none"
                 aria-label="Become a Driver"
               >
                 <FaIdCard /> Driver
               </a>
               <a
                 href="https://websim.example.com/sina-taxi-company/signin"
-                className="me-3"
+                className="me-3 text-decoration-none"
                 aria-label="Sign In"
               >
                 <FaSignInAlt /> Sign In
               </a>
               <a
                 href="https://websim.example.com/sina-taxi-company/signup"
-                className="me-3"
+                className="me-3 text-decoration-none"
                 aria-label="Sign Up"
               >
                 <FaUserPlus /> Sign Up

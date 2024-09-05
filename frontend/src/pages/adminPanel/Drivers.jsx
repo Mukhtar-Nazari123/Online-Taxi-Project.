@@ -11,20 +11,21 @@ function Drivers() {
   const [selectedImage, setSelectedImage] = useState(null); 
   const [selectedDriverId, setSelectedDriverId] = useState(null);
 
+  const fetchDrivers = async () => {
+    try {
+      const response = await axios.get('/api/admin/drivers', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setDrivers(response.data);
+    } catch (error) {
+      console.error('Error fetching drivers:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchDrivers = async () => {
-      try {
-        const response = await axios.get('/api/admin/drivers', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        setDrivers(response.data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
     fetchDrivers();
   }, []);
 
@@ -51,29 +52,35 @@ function Drivers() {
 
   const handleStatusClick = async (driverId) => {
     const confirmChange = window.confirm(`Do you want to change the status of this driver?`);
+    
     if (confirmChange) {
       try {
-        // 1. Determine the new status
-        const newStatus = !drivers.find(driver => driver.id === driverId).status;
-
-        // 2. Send a PUT request to your API endpoint to update the status
+        // 1. Find the current driver
+        const currentDriver = drivers.find(driver => driver.id === driverId);
+  
+        // 2. Determine the new status
+        const newStatus = currentDriver.status === 'disabled' ? 'enabled' : 'disabled';
+  
+        // 3. Send a PUT request to update the driver's status
         const response = await axios.put(
           `/api/admin/drivers/${driverId}/status`, // Your API endpoint
-          { status: newStatus ? 'disabled' : 'enabled' }, // Send 'enabled' or 'disabled'
+          { status: newStatus }, // Send 'enabled' or 'disabled'
           {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
-              'Content-Type': 'application/json', // Use application/json for data
+              'Content-Type': 'application/json',
             },
           }
         );
-
-        // 3. Update the driver's status in your local state
-        setDrivers(prevDrivers => prevDrivers.map(driver =>
-          driver.id === driverId ? { ...driver, status: newStatus } : driver
-        ));
-
-        // 4. Handle success or error (optional)
+  
+        // 4. Update the local state with the new status
+        setDrivers(prevDrivers => 
+          prevDrivers.map(driver => 
+            driver.id === driverId ? { ...driver, status: newStatus } : driver
+          )
+        );
+  
+        // 5. Handle success or error (optional)
         if (response.status === 200) {
           console.log('Driver status updated successfully!');
         } else {
@@ -85,7 +92,6 @@ function Drivers() {
       }
     }
   };
-
 
 
   const handleEditClick = (driverId) => { 
@@ -110,9 +116,11 @@ function Drivers() {
     setSelectedImage(null);
   };
 
-  const EditcloseModal = () => {
-    setShowEdit(false); // Update state to hide the modal
+  const EditcloseModal = async () => {
+    setShowEdit(false); // Hide the modal
+    await fetchDrivers(); // Fetch updated drivers after closing the modal
   };
+
 
   return (
     <div>
@@ -176,7 +184,7 @@ function Drivers() {
                       <td>{driver.address}</td>
                       <td>
                         <div className='statusButton fs-5' onClick={() => handleStatusClick(driver.id)}>
-                          {driver.status ? 'Disabled' : 'Enabled'}
+                            {driver.status === 'disabled' ? 'Disabled' : 'Enabled'}
                         </div>
                       </td>
                       <td className='d-flex justify-content-center'>
@@ -207,7 +215,7 @@ function Drivers() {
         <div className="modal1" onClick={(e) => e.stopPropagation()}>
           <div className="modal-content1" onClick={(e) => e.stopPropagation()}>
             <span className="close" onClick={EditcloseModal}>&times;</span>
-            <EditDriverDoc onClose={EditcloseModal} driverId={selectedDriverId} />
+            <EditDriverDoc onClose={EditcloseModal} driverId={selectedDriverId}/>
           </div>
         </div>
       )}

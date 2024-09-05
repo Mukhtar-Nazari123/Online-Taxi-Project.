@@ -5,7 +5,7 @@ import "./navbar.css";
 export class Navbar extends Component {
   render() {
     return (
-      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top">
+      <nav class="navbar navbar-expand-lg navbar-dark bg-dark fixed-top m-0 p-0">
         <div class="container-fluid">
           <a class="navbar-brand" href="#1">
             <h1>Online Taxi</h1>

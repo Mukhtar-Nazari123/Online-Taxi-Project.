@@ -5,26 +5,26 @@ import { CgProfile } from "react-icons/cg";
 import { IconContext } from "react-icons";
 import MapSection from "../../components/MapSection";
 import { FaMapMarkedAlt } from "react-icons/fa";
+import { FaUsers } from 'react-icons/fa';
 import { useState } from "react";
+import debounce from 'lodash/debounce';
 import UserProfile from "./UserProfile";
+import RequestInfo from "./RequestInfo";
 
 const User = () => {
   const [originInput, setOriginInput] = useState("");
   const [destinationInput, setDestinationInput] = useState("");
   const [originSuggestions, setOriginSuggestions] = useState([]);
   const [destinationSuggestions, setDestinationSuggestions] = useState([]);
+  const [numberInput, setNumberInput] = useState(1);
+  const [requestData, setRequestData] = useState(null)
   const [selectedOrigin, setSelectedOrigin] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
-  const [showOnMap, setShowOnMap] = useState(false);
   const [toggle, setToggle] = useState(false);
   const Toggle = () => {
     setToggle(!toggle);
   };
 
-  const handleShowOnMap = (event) => {
-    event.preventDefault(); // Prevent the default form submission behavior
-    setShowOnMap(true);
-  };
 
   // Function to handle changes in the origin and destination input field
   const handleOriginInputChange = async (event) => {
@@ -38,18 +38,22 @@ const User = () => {
     await handleInputChange(value, "destination");
   };
 
-  const handleInputChange = async (inputValue, type) => {
-      try {
-        const response = await axios.get('/api/nominatim', {
-          params: { q: inputValue },
+  const handleNumberInputChange = (event) => {
+    setNumberInput(event.target.value);
+  };
+
+  const fetchSuggestions = debounce(async (inputValue, type) => {
+    if (!inputValue) return;
+
+    try {
+      const response = await axios.get('/api/nominatim', {
+        params: { q: inputValue },
       });
 
-      // Map the response data to an array of suggestions, prioritizing shorter names and extracting the most relevant part
       const suggestions = response.data
         .sort((a, b) => a.display_name.length - b.display_name.length)
         .slice(0, 10)
         .map((result) => {
-          // Extract the most relevant part of the display name
           const relevantParts = result.display_name.split(",").slice(0, 2);
           const label = relevantParts.join(", ");
 
@@ -70,6 +74,10 @@ const User = () => {
     } catch (error) {
       console.error("Error fetching suggestions:", error);
     }
+  }, 1000); // Adjust the debounce time as needed
+
+  const handleInputChange = (inputValue, type) => {
+    fetchSuggestions(inputValue, type);
   };
 
   // Function to handle the selection of a location from the suggestions
@@ -83,6 +91,21 @@ const User = () => {
       setDestinationInput(option.label);
       setDestinationSuggestions([]);
     }
+  };
+
+  const handleSubmit = (event) => {
+    event.preventDefault(); // Prevent the default form submission
+    setRequestData({
+      origin: originInput,
+      destination: destinationInput,
+      number: numberInput,
+    });
+    console.log("Request Data: ", requestData); // Log or send the data as needed
+    // You can pass requestData to another component or make an API call here
+  };
+
+  const handleRequestInfoClose = () => {
+    setRequestData(null); // Reset requestData to null when closing
   };
 
   return (
@@ -110,7 +133,7 @@ const User = () => {
             <div className="d-flex justify-content-center">
               <div className="RequestTaxiDiv">
                 <h2>Get Ride</h2>
-                <form action="">
+                <form onSubmit={handleSubmit} action="">
                   <div>
                   </div>
                   <div className="form-group">
@@ -126,11 +149,12 @@ const User = () => {
                       </div>
                     </IconContext.Provider>
                     <input
-                      className="originDestinationInput"
+                      className="requestInput"
                       type="text"
                       placeholder="Enter the origin....."
                       value={originInput}
                       onChange={handleOriginInputChange}
+                      required
                     />
                     {originSuggestions.length > 0 && (
                       <ul className="suggestionPlacesList">
@@ -169,11 +193,12 @@ const User = () => {
                       </div>
                     </IconContext.Provider>
                     <input
-                      className="originDestinationInput"
+                      className="requestInput"
                       type="text"
                       placeholder="Enter the destination....."
                       value={destinationInput}
                       onChange={handleDestinationInputChange}
+                      required
                     />
                     {destinationSuggestions.length > 0 && (
                       <ul className="suggestionPlacesList">
@@ -200,11 +225,34 @@ const User = () => {
                     )}
                   </div>
                   <div className="form-group">
-                    <button
-                      className="btn btn-primary form-control mt-3"
-                      onClick={handleShowOnMap}
+                    <IconContext.Provider
+                      value={{
+                        size: "25px",
+                        className: "global-className-name",
+                      }}
                     >
-                      search
+                      <div className="d-flex justify-content-start gap-2 mt-3">
+                          <FaUsers />
+                        <label htmlFor="destination">Number</label>
+                      </div>
+                    </IconContext.Provider>
+                    <input
+                      className="requestInput"
+                      type="number"
+                      placeholder="Enter the number..."
+                      value={numberInput}
+                      onChange={handleNumberInputChange}
+                      min="1"
+                      max="10"
+                      required
+                    />
+                  </div>
+                  <div className="form-group">
+                    <button
+                    type="submit"
+                      className="form-control mt-3 bg-primary"
+                    >
+                      request
                     </button>
                   </div>
                 </form>
@@ -212,14 +260,16 @@ const User = () => {
             </div>
           </div>
           <div className="col-lg-8 p-2">
-            <div>{/*Map Section*/}</div>
             <MapSection
-              originCoords={showOnMap ? selectedOrigin : null}
-              destinationCoords={showOnMap ? selectedDestination : null}
+              originCoords={selectedOrigin}
+              destinationCoords={selectedDestination}
             />
           </div>
         </div>
       </div>
+      {requestData && (
+        <RequestInfo requestData={requestData} onClose={handleRequestInfoClose} />
+      )}
     </div>
   );
 };

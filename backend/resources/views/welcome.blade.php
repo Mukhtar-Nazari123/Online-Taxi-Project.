@@ -3,6 +3,21 @@
     <head>
         <meta charset="utf-8">
         <meta name="viewport" content="width=device-width, initial-scale=1">
+        <script src="https://js.pusher.com/8.2.0/pusher.min.js"></script>
+        <script>
+
+            // Enable pusher logging - don't include this in production
+            Pusher.logToConsole = true;
+
+            var pusher = new Pusher('74ac6032e10154762e2c', {
+            cluster: 'ap2'
+            });
+
+            var channel = pusher.subscribe('my-channel');
+            channel.bind('MyEvent', function(data) {
+            alert(JSON.stringify(data));
+            });
+        </script>
 
         <title>Laravel</title>
 

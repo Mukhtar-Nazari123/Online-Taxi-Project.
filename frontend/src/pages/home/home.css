@@ -1,7 +1,7 @@
 /* src/components/body.css */
 
 .hero {
-  background-image: url("E:\online_taxi_project\frontend\src\assets\images\kabul-city.jpg"); /* Replace with your image path */
+  background-image: url("../../assets/images/kabul-city.jpg"); /* Replace with your image path */
   background-size: cover;
   background-position: center;
   padding: 100px 0;

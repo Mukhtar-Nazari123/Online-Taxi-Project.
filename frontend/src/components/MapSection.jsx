@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from "react";
-import { MapContainer, Marker, Popup, TileLayer, Polygon } from "react-leaflet";
+import { MapContainer, Marker, Popup, TileLayer } from "react-leaflet";
 import L from "leaflet";
 import "./mapSection.css";
 import UserCenterMapButton from "../pages/userPage/UserCenterMapButton";
@@ -15,25 +15,19 @@ const iconD = L.divIcon({
   className: "custom-marker-icon",
 });
 
-const kabulProvinceBoundary = [
-  [35.0015, 69.1264],
-  [34.8419, 69.5577],
-  [34.6138, 69.7114],
-  [34.4183, 69.5837],
-  [34.2417, 69.1876],
-  [34.1869, 68.8594],
-  [34.3712, 68.5946],
-  [34.6243, 68.5134],
-  [34.8752, 68.7273],
-  [35.0015, 69.1264],
-];
-
 const MapSection = ({ originCoords, destinationCoords }) => {
   const [userLocation, setUserLocation] = useState(null);
+  const [origin, setOrigin] = useState();
+  const [destination, setDestination] = useState();
   const mapRef = useRef(null);
-  const kabulPolygon = useRef(null);
 
-  //get current position of user when click on button
+  // Initialize origin and destination only once
+  useEffect(() => {
+    setOrigin(originCoords);
+    setDestination(destinationCoords);
+  }, [originCoords, destinationCoords]);
+
+  // Get current position of user
   useEffect(() => {
     const getUserLocation = () => {
       if (navigator.geolocation) {
@@ -57,89 +51,89 @@ const MapSection = ({ originCoords, destinationCoords }) => {
     getUserLocation();
   }, []);
 
-  //center the on user position
+  // Center the map on user position
   const centerMapOnUser = () => {
     if (userLocation && mapRef.current) {
       mapRef.current.flyTo(userLocation, 17);
     }
   };
 
-  // Filter out any coordinates that are not within the valid range
-  const isWithinBounds = (lat, lon) => {
-    return lat >= 33.8532 && lat <= 35.3614 && lon >= 68.0603 && lon <= 70.5081;
-  };
-  const validBoundary = kabulProvinceBoundary.filter(([lat, lon]) =>
-    isWithinBounds(lat, lon)
-  );
-
   const position = userLocation || [34.509904, 69.064005];
   const zoom_level = 17;
+
+
+
   return (
     <div>
-      <div>
-        <MapContainer
-          whenCreated={(mapInstance) => {
-            mapRef.current = mapInstance;
-          }}
-          ref={mapRef}
-          className="userMap"
-          center={position}
-          zoom={zoom_level}
-          scrollWheelZoom={true}
-          rotate={true}
-        >
-          <TileLayer
-            attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-            url="https://tile.openstreetmap.de/{z}/{x}/{y}.png"
-          />
-          <Polygon
-            ref={kabulPolygon}
-            positions={validBoundary}
-            color="white"
-            fillColor="lightblue"
-            weight={1}
-          />
-          {userLocation && (
-            <Marker position={userLocation} icon={iconO}>
-              <Popup>
-                A pretty CSS3 popup. <br /> Easily customizable.
-              </Popup>
-            </Marker>
-          )}
+      <MapContainer
+        whenCreated={(mapInstance) => {
+          mapRef.current = mapInstance;
+        }}
+        ref={mapRef}
+        className="userMap"
+        center={position}
+        zoom={zoom_level}
+        scrollWheelZoom={true}
+        rotate={true}
+      >
+        <TileLayer
+          attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+          url="https://tile.openstreetmap.de/{z}/{x}/{y}.png"
+        />
 
-          {originCoords &&
-            originCoords.lat !== undefined &&
-            originCoords.lon !== undefined && (
-              <Marker
-                position={[originCoords.lat, originCoords.lon]}
-                icon={iconO}
-              >
-                <Popup>Origin</Popup>
-              </Marker>
-            )}
+        {userLocation && (
+          <Marker position={userLocation} icon={iconO}>
+            <Popup>
+              A pretty CSS3 popup. <br /> Easily customizable.
+            </Popup>
+          </Marker>
+        )}
 
-          {destinationCoords &&
-            destinationCoords.lat !== undefined &&
-            destinationCoords.lon !== undefined && (
-              <Marker
-                position={[destinationCoords.lat, destinationCoords.lon]}
-                icon={iconD}
-              >
-                <Popup>Destination</Popup>
-              </Marker>
-            )}
-          {destinationCoords &&
-            destinationCoords.lat !== undefined &&
-            destinationCoords.lon !== undefined && (
-              <RoutingMachine
-                originCoords={originCoords}
-                destinationCoords={destinationCoords}
-                map={mapRef.current}
-              />
-            )}
-          <UserCenterMapButton onCenterMap={centerMapOnUser} />
-        </MapContainer>
-      </div>
+        {origin && origin.lat !== undefined && origin.lon !== undefined && (
+          <Marker
+          title="origin"
+            position={[origin.lat, origin.lon]}
+            icon={iconO}
+            draggable={true}
+            eventHandlers={{
+              dragend: (e) => {
+                const marker = e.target;
+                const position = marker.getLatLng();
+                setOrigin({ lat: position.lat, lon: position.lng });
+              },
+            }}
+          >
+            <Popup>Origin</Popup>
+          </Marker>
+        )}
+
+        {destination && destination.lat !== undefined && destination.lon !== undefined && (
+          <Marker
+            title="destination"
+            position={[destination.lat, destination.lon]}
+            icon={iconD}
+            draggable={true}
+            eventHandlers={{
+              dragend: (e) => {
+                const marker = e.target;
+                const position = marker.getLatLng();
+                setDestination({ lat: position.lat, lon: position.lng });
+              },
+            }}
+          >
+            <Popup>Destination</Popup>
+          </Marker>
+        )}
+
+        {origin && destination && mapRef.current && (
+          <RoutingMachine
+            originCoords={origin}
+            destinationCoords={destination}
+            map={mapRef.current}
+          />
+        )}
+        <UserCenterMapButton onCenterMap={centerMapOnUser} />
+      </MapContainer>
     </div>
   );
 };

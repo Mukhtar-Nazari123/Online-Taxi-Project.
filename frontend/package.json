@@ -22,8 +22,10 @@
     "css-loader": "^7.1.2",
     "jquery": "^3.7.1",
     "leaflet": "^1.9.4",
+    "leaflet-polylinedecorator": "^1.6.0",
     "leaflet-rotate": "^0.2.8",
     "leaflet-routing-machine": "^3.2.12",
+    "lodash": "^4.17.21",
     "mdb-react-ui-kit": "^8.0.0",
     "popper.js": "^1.16.1",
     "react": "^18.3.1",
@@ -68,6 +70,8 @@
     ]
   },
   "devDependencies": {
-    "@types/leaflet": "^1.9.12"
+    "@types/leaflet": "^1.9.12",
+    "laravel-echo": "^1.16.1",
+    "pusher-js": "^8.4.0-rc2"
   }
 }
