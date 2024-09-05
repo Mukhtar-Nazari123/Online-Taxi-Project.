@@ -8,11 +8,12 @@ import { FaCar } from "react-icons/fa";
 import MapSection from '../../components/MapSection';
 import DriverProfiles from './DriverProfiles';
 import CarInfo from './CarInfo';
+import GetNotification from '../../components/GetNotification';
+
 
 function DriverHome(Toggle) {
     const [showEditInfo, setEditInfo] = useState(false);
     const [showCarInfo, setshowCarInfo] = useState(false);
-
 
   const handleEditInfoClick = () => {
     setEditInfo(!showEditInfo);
@@ -69,6 +70,7 @@ function DriverHome(Toggle) {
                 </li>
             </div>
         </nav>
+        <GetNotification/>
         {showEditInfo && <DriverProfiles />}
         {showCarInfo && <CarInfo />}
         <div className='px-3'>

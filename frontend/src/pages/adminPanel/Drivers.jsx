@@ -11,20 +11,21 @@ function Drivers() {
   const [selectedImage, setSelectedImage] = useState(null); 
   const [selectedDriverId, setSelectedDriverId] = useState(null);
 
+  const fetchDrivers = async () => {
+    try {
+      const response = await axios.get('/api/admin/drivers', {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+      setDrivers(response.data);
+    } catch (error) {
+      console.error('Error fetching drivers:', error);
+    }
+  };
+
   useEffect(() => {
-    const fetchDrivers = async () => {
-      try {
-        const response = await axios.get('/api/admin/drivers', {
-          headers: {
-            'Authorization': `Bearer ${localStorage.getItem('token')}`,
-            'Content-Type': 'multipart/form-data',
-          },
-        });
-        setDrivers(response.data);
-      } catch (error) {
-        console.error('Error fetching users:', error);
-      }
-    };
     fetchDrivers();
   }, []);
 
@@ -115,8 +116,9 @@ function Drivers() {
     setSelectedImage(null);
   };
 
-  const EditcloseModal = () => {
-    setShowEdit(false); // Update state to hide the modal
+  const EditcloseModal = async () => {
+    setShowEdit(false); // Hide the modal
+    await fetchDrivers(); // Fetch updated drivers after closing the modal
   };
 
 
@@ -213,7 +215,7 @@ function Drivers() {
         <div className="modal1" onClick={(e) => e.stopPropagation()}>
           <div className="modal-content1" onClick={(e) => e.stopPropagation()}>
             <span className="close" onClick={EditcloseModal}>&times;</span>
-            <EditDriverDoc onClose={EditcloseModal} driverId={selectedDriverId} />
+            <EditDriverDoc onClose={EditcloseModal} driverId={selectedDriverId}/>
           </div>
         </div>
       )}

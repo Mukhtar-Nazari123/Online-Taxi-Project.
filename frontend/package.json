@@ -74,5 +74,9 @@
     "@types/leaflet": "^1.9.12",
     "file-loader": "^6.2.0",
     "url-loader": "^4.1.1"
+
+    "laravel-echo": "^1.16.1",
+    "pusher-js": "^8.4.0-rc2"
+
   }
 }

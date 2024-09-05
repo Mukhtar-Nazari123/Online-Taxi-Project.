@@ -5,9 +5,11 @@ import "./navbar.css";
 export class Navbar extends Component {
   render() {
     return (
+
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top m-0 p-0">
         <div className="container-fluid">
           <a className="navbar-brand" href="#1">
+
             <h1>Online Taxi</h1>
           </a>
           <button

@@ -1,10 +1,10 @@
 import React, { useState, useEffect } from 'react';
-import "./userProfile.css";
+import "./adminProfile.css";
 import axios from 'axios';
 import LogoutButton from '../../components/LogoutButton';
-import ProfileEditForm from './ProfileEditForm';
+import ProfileEditForm from '../../pages/userPage/ProfileEditForm';
 
-function UserProfile() {
+function AdminProfile() {
   const [isVisible, setIsVisible] = useState(true);
   const [showEditForm, setShowEditForm] = useState(false);
   const [userData, setUserData] = useState({
@@ -115,4 +115,4 @@ function UserProfile() {
   );
 }
 
-export default UserProfile;
+export default AdminProfile;

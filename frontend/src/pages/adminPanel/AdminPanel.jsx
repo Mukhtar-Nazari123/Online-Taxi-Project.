@@ -8,6 +8,7 @@ import AdminHome from './AdminHome'
 import Drivers from './Drivers'
 import Trips from './Trips'
 import ShowCarInfo from './ShowCarInfo'
+import Messages from './Messages'
 
 
 function AdminPanel() {
@@ -32,6 +33,9 @@ function AdminPanel() {
   const TripComponent = () => {
     SetOpenOptions("tripComponent");
   }
+  const MessageComponent = () => {
+    SetOpenOptions("messageComponent");
+  }
 
   return (
     <div className='container-fluid bg-secondary min-vh-100'>
@@ -43,6 +47,7 @@ function AdminPanel() {
         DriverComponent = {DriverComponent}
         CarComponent = {CarComponent}
         TripComponent = {TripComponent}
+        MessageComponent = {MessageComponent}
         />
         </div> }
         {toggle && <div className='col-4 col-lg-3 col-xl-2'></div> }
@@ -71,6 +76,11 @@ function AdminPanel() {
           {openOptions === "tripComponent" && (
             <div>
               <Trips/>
+          </div>
+          )}
+          {openOptions === "messageComponent" && (
+            <div>
+              <Messages/>
           </div>
           )}
         </div>
