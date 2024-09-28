@@ -118,7 +118,7 @@ function ProfileEditForm() {
                 />
                 <div className="input-group-append">
                   <span className="input-group-text" onClick={() => toggleEditMode('name')}>
-                    <i className="bi bi-pencil-square "></i>
+                    <i className="bi bi-pencil-square fs-5"></i>
                   </span>
                 </div>
               </div>
@@ -138,7 +138,7 @@ function ProfileEditForm() {
                 />
                 <div className="input-group-append">
                   <span className="input-group-text" onClick={() => toggleEditMode('email')}>
-                    <i className="bi bi-pencil-square"></i>
+                    <i className="bi bi-pencil-square fs-5"></i>
                   </span>
                 </div>
               </div>
@@ -158,7 +158,7 @@ function ProfileEditForm() {
                 />
                 <div className="input-group-append">
                   <span className="input-group-text" onClick={() => toggleEditMode('phone_number')}>
-                    <i className="bi bi-pencil-square"></i>
+                    <i className="bi bi-pencil-square fs-5"></i>
                   </span>
                 </div>
               </div>

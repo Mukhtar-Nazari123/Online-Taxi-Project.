@@ -10,15 +10,12 @@ class NotificationController extends Controller
 {
     public function sendNotification(Request $request)
     {
-        $message = 'Hello, this is a real-time notification!';
 
         // Trigger the event
-        event(new MyEvent($message));
+        event(new MyEvent('Hello, this is a real-time notification!'));
 
-        // Log the event
-        Log::info('Notification event triggered with message: ' . $message);
 
         // Return a JSON response
-        return response()->json(['status' => 'Notification sent']);
+        return response()->json(['message' => 'Hello from Laravel']);
     }
 }

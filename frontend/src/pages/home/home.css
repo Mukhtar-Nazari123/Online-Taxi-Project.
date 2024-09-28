@@ -1,9 +1,10 @@
 .hero {
-  background-image: url("../../assets/images/kabul-city.jpg"); /* Replace with your image path */
+  height: 650px;
   background-size: cover;
   background-position: center;
   padding: 100px 0;
   color: white;
+  transition: background-image 1s ease-in-out;
 }
 
 .hero .cta-button {
@@ -20,59 +21,71 @@
   background-color: #e6b800;
 }
 
-/* Container for the feature section */
-.feature-icon {
-  font-size: 3rem;
-  color: #333; /* Default color if no specific class is applied */
+.homeHeader {
+  text-shadow: 3px 2px red;
 }
 
-/* Colors for specific icons */
+.homeHeader:hover {
+  text-shadow: 3px 2px black;
+}
+
+.textOne {
+  text-shadow: 3px 2px rgb(0, 0, 0);
+}
+
+.cta-button {
+  box-shadow: 10px 10px 15px rgba(0, 0, 0, 1);
+}
+
+.feature-icon {
+  font-size: 3rem;
+  color: #333;
+}
+
+
 .feature-icon.fast-pickup {
-  color: #007bff; /* Blue for fast pickup */
+  color: #007bff;
 }
 
 .feature-icon.safe-secure {
-  color: #28a745; /* Green for safety and security */
+  color: #28a745;
 }
 
 .feature-icon.affordable-rates {
-  color: #ff6600; /* Orange for affordable rates */
+  color: #ff6600;
 }
 
-/* Container for the icons */
 .vehicle-type-container {
   display: flex;
-  justify-content: space-around; /* Distribute space between icons */
-  align-items: center; /* Center items vertically */
-  flex-wrap: wrap; /* Wrap to the next line if needed */
+  justify-content: space-around;
+  align-items: center;
+  flex-wrap: wrap;
 }
 
-/* Style for individual vehicle type boxes */
 .vehicle-type {
   text-align: center;
-  flex: 1; /* Allows items to grow and shrink equally */
-  margin: 1rem; /* Spacing between items */
+  flex: 1; 
+  margin: 1rem;
 }
 
 .feature-icon.economy {
-  color: #28a745; /* Green for economy */
+  color: #28a745; 
 }
 
 .feature-icon.comfort {
-  color: #17a2b8; /* Blue for comfort */
+  color: #17a2b8;
 }
 
 .feature-icon.premium {
-  color: #ffc107; /* Gold for premium */
+  color: #ffc107;
 }
 
-/* Optional color for a standard or electric vehicle type */
 .feature-icon.standard {
-  color: #6c757d; /* Gray for standard */
+  color: #6c757d; 
 }
 
 .feature-icon.electric {
-  color: #20c997; /* Teal for electric/hybrid */
+  color: #20c997;
 }
 
 .city-card {
@@ -102,9 +115,14 @@
   font-size: 1.2rem;
 }
 
-/* Optional: Style for the feature section */
 section.py-5 {
-  background-color: #f8f9fa; /* Light background for better readability */
+  background-color: #f8f9fa;
+  box-shadow: 0 0 40px rgba(0, 0, 0, 0.1);
+}
+
+.box1:hover {
+  box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
+  border-radius: 10px;
 }
 
 .text-center h3 {
@@ -113,5 +131,5 @@ section.py-5 {
 }
 
 .text-center p {
-  color: #6c757d; /* Gray text for better readability */
+  color: #6c757d;
 }

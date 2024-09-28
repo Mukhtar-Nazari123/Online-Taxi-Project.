@@ -1,0 +1,44 @@
+.chat-container {
+    position: absolute;
+    top: 20%;
+    left: 50%;
+    transform: translate(-50%, -20%);
+    background:#fdeded;
+    margin: 2rem auto;
+    border: 1px solid #ddd;
+    border-radius: 8px;
+    overflow: hidden;
+    z-index: 10000;
+  }
+  
+  .chat-header {
+    background-color: #f8f9fa;
+    padding: 1rem;
+    border-bottom: 1px solid #ddd;
+  }
+  
+  .chat-messages {
+    height: auto;
+    padding: 1rem;
+  }
+  
+  .rating-stars {
+    font-size: 1.5rem;
+    cursor: pointer;
+  }
+  
+  .rating-stars .star:hover,
+  .rating-stars .star.active {
+    color: #ffc107;
+  }
+
+  .close-Btnnn {
+    position: absolute;
+    top: -5px;
+    right: 10px;
+    font-size: 34px;
+    color: #333;
+    cursor: pointer;
+    z-index: 1000;
+}
+  

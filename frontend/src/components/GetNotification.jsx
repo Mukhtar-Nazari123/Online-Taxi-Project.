@@ -8,25 +8,26 @@ const GetNotification = () => {
     useEffect(() => {
         Pusher.logToConsole = true;
 
-        const pusher = new Pusher('74ac6032e10154762e2c', {
-            cluster: 'ap2',
+        const pusher = new Pusher('9a70a9abd2a13265d9c3', {
+            cluster: 'ap1',
         });
-        console.log('loooooooooooooo')
 
         const channel = pusher.subscribe('my-channel');
 
+        // Bind to the event
         channel.bind('MyEvent', (data) => {
             console.log('Event received:', data);
-            alert(`Received notification: ${data.message}`);
+            alert(`Received notification: ${data.message}`); // Use data.message to display the message
         });
 
+        // Cleanup on component unmount
         return () => {
             pusher.unsubscribe('my-channel');
         };
     }, []);
 
     const sendNotification = () => {
-        axios.get('/api/notifications')
+        axios.post('/api/notifications')
             .then(response => {
                 console.log(response.data); // Log the response data
             })

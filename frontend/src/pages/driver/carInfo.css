@@ -1,8 +1,7 @@
 .cardBody {
     position: absolute;
     background-color: aliceblue;
-    width: 600px;
-    height: 320px;
+    height: auto;
     border-radius: 10px;
     z-index: 1000;
     left: 50%;

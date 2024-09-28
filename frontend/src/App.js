@@ -11,7 +11,8 @@ import DriverRegistrationForm from "./pages/register/DriverRegistrationForm";
 import DriverInfo from "./pages/register/DriverInfo";
 import DriverHome from "./pages/driver/DriverHome";
 import DriverProfiles from "./pages/driver/DriverProfiles";
-// import "./assets/fonts"; // Import your font CSS here
+import PrivateRoute from './components/PrivateRoute'; // Import the PrivateRoute
+import Message from "./pages/userPage/Message";
 
 function App() {
   return (
@@ -19,14 +20,50 @@ function App() {
       <BrowserRouter>
         <Routes>
           <Route path="/" element={<Home />} />
-          <Route path="/user" element={<User />} />
-          <Route path="/adminPanel" element={<AdminPanel />} />
+          <Route 
+            path="/user" 
+            element={
+              <PrivateRoute requiredRole="user">
+                <User />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/adminPanel" 
+            element={
+              <PrivateRoute requiredRole="admin">
+                <AdminPanel />
+              </PrivateRoute>
+            } 
+          />
           <Route path="/register" element={<RegistrationForm />} />
           <Route path="/login" element={<Login />} />
           <Route path="/driverRegister" element={<DriverRegistrationForm />} />
-          <Route path="/driver" element={<DriverHome />} />
-          <Route path="/driverInfo" element={<DriverInfo />} />
-          <Route path="/driverProfile" element={<DriverProfiles />} />
+          <Route 
+            path="/driver" 
+            element={
+              <PrivateRoute requiredRole="driver">
+                <DriverHome />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/driverInfo" 
+            element={
+              <PrivateRoute>
+                <DriverInfo />
+              </PrivateRoute>
+            } 
+          />
+          <Route 
+            path="/driverProfile" 
+            element={
+              <PrivateRoute requiredRole="driver">
+                <DriverProfiles />
+              </PrivateRoute>
+            } 
+          />
+          <Route path="/message" element={<Message />} />
         </Routes>
       </BrowserRouter>
     </div>

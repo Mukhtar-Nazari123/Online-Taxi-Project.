@@ -4,6 +4,7 @@ import "./login.css"; // Import your custom styles
 import { Link, useNavigate } from 'react-router-dom';
 import axiosInstance from "../../components/axiosInstance";
 import swal from 'sweetalert';
+import { IoMdHome } from "react-icons/io";
 
 function Login() {
   const navigate = useNavigate();
@@ -34,11 +35,8 @@ function Login() {
           localStorage.setItem('name', res.data.name);
           localStorage.setItem('id', res.data.id);
           localStorage.setItem('driver_id', res.data.driverId);
-          // Set token expiration (e.g., 7 days)
+          localStorage.setItem('role', res.data.role);
           
-          const expiresIn = 7;
-          const expirationDate = new Date(new Date().getTime() + expiresIn * 24 * 60 * 60 * 1000);
-          localStorage.setItem('tokenExpiration', expirationDate.toISOString());
           const driverStatus = res.data.driverStatus;
 
           switch (res.data.role) {
@@ -77,21 +75,27 @@ function Login() {
 
   return (
     <div className="container login-container">
+      <Link to="/" title="home" className="text-decoration-none">
+          <IoMdHome className="fs-2 homeIcon1"/>
+      </Link>
       <div className="row justify-content-center align-items-center">
         <div className="col-md-8">
           <div className="row">
             {/* Left column with car picture */}
             <div className="col-md-6 d-flex justify-content-center align-items-center">
               <img
-                src={"10_7b068155.jpg"}
+                width={'200px'}
+                src={"OIP (5).jpeg"}
                 alt="Taxi service"
                 className="img-fluid login-image"
               />
             </div>
             {/* Right column with login form */}
             <div className="col-md-6 my-4">
+                <div className="loginHeader bg-primary p-2">
+                  <h3 className="text-center">Login</h3>
+                </div>
               <div className="login-form">
-                <h3 className="text-center text-primary">Login</h3>
                 <form onSubmit={loginSubmit}>
                   <div className="mb-3">
                     <label htmlFor="email" className="form-label text-dark">
@@ -132,7 +136,8 @@ function Login() {
                     <div className="errorMessage">{loginInput.error}</div>
                   )}
                   <p className="my-2">
-                    Don't have an account? <Link to="/register" style={{ color: 'green' }} className="text-decoration-none">Register Account</Link>
+                    Don't have an account? <Link to="/register" className="text-decoration-none me-2">Register Account</Link>
+                    <Link to="/" className="text-decoration-none">Home</Link>
                   </p>
                 </form>
               </div>

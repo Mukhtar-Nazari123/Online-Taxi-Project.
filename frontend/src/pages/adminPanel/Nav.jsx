@@ -11,10 +11,11 @@ function Nav({ Toggle }) {
   };
 
   return (
-    <nav className="navbar navbar-expand-sm navbar-dark bg-transparent position-sticky">
-      <i className="navbar-brand bi bi-justify-left fs-4" onClick={Toggle}></i>
+    <nav className="navbar navbar-expand-sm navbar-dark bg-transparent position-sticky ">
+      <i className="navbar-brand bi bi-justify-left fs-2 text-primary" onClick={Toggle}></i>
       <button
-        className="navbar-toggler d-lg-none"
+        className="navbar-toggler"
+        style={{ position: 'relative', zIndex: 1000 }}
         type="button"
         data-bs-toggle="collapse"
         data-bs-target="#collapsibleNavId"
@@ -24,6 +25,19 @@ function Nav({ Toggle }) {
       >
         <i className='bi bi-justify'></i>
       </button>
+        <div className="text-center" style={{ width: '100%' }}>
+          <h1 
+          style={{ 
+            margin: '0 auto', 
+            color: '#00BFFF',
+            fontSize: '2.5rem',
+            fontWeight: 'bold',
+            textShadow: '2px 2px 4px rgba(0, 0, 0, 0.9)',
+            letterSpacing: '2px',
+            cursor: 'pointer'
+           }}
+          >Admin Dashboard</h1>
+        </div>
       <div className="collapse navbar-collapse" id="collapsibleNavId">
         <ul className="navbar-nav ms-auto mt-2 mt-lg-0">
           <li className="nav-item dropdown">

@@ -7,9 +7,22 @@
 
 .carIcon {
     font-size: 110px;
-    color: rgb(0, 162, 255);
+    background: linear-gradient(to right,red,orange,yellow,green,blue,indigo,violet);
+    background-clip: text;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent; 
+    color: transparent;
+    cursor: pointer;
 }
+
+.carIcon:hover {
+    font-size: 111px;
+    text-shadow: 2px 2px 5px rgba(110, 110, 110, 0.3);
+}
+
 
 .OnlineTaxi {
     color: rgb(255, 166, 0);
+    text-shadow: 2px 2px 3px rgba(0, 0, 0, 1);
+    cursor: pointer;
 }

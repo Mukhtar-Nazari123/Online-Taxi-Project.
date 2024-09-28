@@ -9,9 +9,11 @@ use App\Http\Controllers\API\DriverController;
 use App\Http\Controllers\API\CarController;
 use App\Http\Controllers\API\DriverLocationController;
 use App\Http\Controllers\API\TripController;
+use App\Http\Controllers\API\MessageController;
 use Illuminate\Support\Facades\Http;
 use App\Http\Controllers\NotificationController;
 use Illuminate\Support\Facades\Broadcast;
+
 
 
 
@@ -46,6 +48,11 @@ Route::prefix('admin')
         Route::delete('/drivers/{id}', [AdminController::class, 'deleteDriver']);
         Route::post('/drivers/{driver}', [DriverController::class, 'updateDriverDoc']);
         Route::get('/carsInfo', [AdminController::class, 'carsInfo']);
+        Route::delete('/deleteCar/{car}', [AdminController::class, 'deleteCar']);
+        Route::get('/tripInfo', [TripController::class, 'showTrips']);
+        Route::delete('/delete/{trip}', [TripController::class, 'deleteTrip']);
+        Route::get('/messages', [AdminController::class, 'getMessages']);
+        Route::delete('/deleteMessage/{message}', [AdminController::class, 'deleteMessage']);
     });
 
 
@@ -73,13 +80,15 @@ Route::prefix('car')
 Route::prefix('trip')
     ->group(function () {
         Route::post('/tripRequest', [TripController::class, 'createRequest']);
+        Route::post('/accepted/{rideId}', [TripController::class, 'driverAccept']);
+        Route::post('/message/{tripId}', [MessageController::class, 'storeMessage']);
+        Route::post('/start/{tripId}', [TripController::class, 'startTrip']);
+        Route::post('/complete/{tripId}', [TripController::class, 'completeTrip']);
+
     });
 
 
-
-Route::get('/notifications', [NotificationController::class, 'sendNotification']);
-
-
+Route::post('/notifications', [NotificationController::class, 'sendNotification']);
 
 Route::get('/nominatim', function (Request $request) {
     $query = $request->input('q');

@@ -5,11 +5,32 @@ use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Http\Request;
 use App\Models\Trip;
+use App\Models\Driver;
+use App\Models\User;
 use App\Models\DriverLocation;
+use App\Events\DriverRideAssigned;
+use App\Events\UserDeclareAccepted;
+use App\Events\ServiceNotAvaible;
+use App\Events\UserMessage;
 use Illuminate\Support\Facades\Validator;
 
 class TripController extends Controller
 {
+
+    public function showTrips()
+    {
+        $trips = Trip::with(['user', 'driver.user'])->get(); // Eager load driver and related user
+
+        return response()->json($trips);
+    }
+
+    public function deleteTrip($id)
+    {
+        $trip = Trip::findOrFail($id);
+        $trip->delete();
+        return response()->json(['message' => 'Trip deleted successfully.']);
+    }
+
     public function createRequest(Request $request)
     {
         try {
@@ -66,23 +87,38 @@ class TripController extends Controller
         );
 
         if ($nearestDriver) {
-            // Optionally notify the driver about the trip request (implementation needed)
-            // ...
+            // Eager load the user data
+            $trip->load('user');
 
-            // Update the trip with the nearest driver's ID
-            $trip->driver_id = $nearestDriver->driver_id; // Assuming driver_id is stored in driver_locations
-            // Update status to indicate a driver is assigned
-            $trip->save();
+            // Prepare ride details including user information
+            $rideDetails = [
+                'id' => $trip->id,
+                'origin' => $trip->origin,
+                'origin_latitude' => $trip->origin_latitude,
+                'origin_longitude' => $trip->origin_longitude,
+                'destination' => $trip->destination,
+                'destination_latitude' => $trip->destination_latitude,
+                'destination_longitude' => $trip->destination_longitude,
+                'passenger_count' => $trip->passenger_count,
+                'distance' => $trip->distance,
+                'fare_amount' => $trip->fare_amount,
+                'user_name' => $trip->user->name,
+                'user_phone' => $trip->user->phone_number,
+                'driver_id' => $nearestDriver->driver_id,
+            ];
+            event(new DriverRideAssigned($rideDetails));
         } else {
-            // Handle the case where no driver is available
-            $trip->status = 'waiting_for_driver'; // Update status accordingly
-            $trip->save();
+            event(new ServiceNotAvaible(['message' => 'Service Not Available']));
         }
     }
 
     private function findNearestAvailableDriver($originLat, $originLon)
     {
         $drivers = DriverLocation::where('status', 'on')->get();
+
+        if ($drivers->isEmpty()) {
+            event(new ServiceNotAvaible(['message' => 'Service Not Available']));
+        }
 
         $nearestDriver = null;
         $shortestDistance = PHP_INT_MAX;
@@ -131,71 +167,78 @@ class TripController extends Controller
     }
 
 
-    public function accept(Request $request, $tripId)
+    public function driverAccept(Request $request, $tripId)
     {
-        $validatedData = $request->validate([
-            'driver_id' => 'required|exists:drivers,id',
-        ]);
+        try {
+            $validatedData = $request->validate([
+                'driver_id' => 'required|exists:drivers,id',
+            ]);
 
-        $trip = Trip::findOrFail($tripId);
-        $trip->update([
-            'driver_id' => $validatedData['driver_id'],
-            'status' => 'accepted',
-        ]);
+            $trip = Trip::findOrFail($tripId);
+            $trip->update([
+                'driver_id' => $validatedData['driver_id'],
+            ]);
 
-        return response()->json($trip);
+            $driver = Driver::with(['user', 'car'])->findOrFail($validatedData['driver_id']);
+
+            if ($driver->user) {
+                $driverInfo = [
+                    'name' => $driver->user->name,
+                    'phone' => $driver->user->phone_number,
+                ];
+
+                if ($driver->car) {
+                    $driverInfo['car'] = [
+                        'model' => $driver->car->model,
+                        'year' => $driver->car->year,
+                        'plate' => $driver->car->plate_number
+                    ];
+                }
+
+                event(new UserDeclareAccepted($driverInfo));
+            }
+
+            $message = "Ride accepted successfully!!";
+            return response()->json([
+                'trip' => $trip,
+                'message' => $message,
+            ]);
+
+        } catch (\Exception $e) {
+            return response()->json(['error' => $e->getMessage()], 500);
+        }
     }
-
     /**
      * Start the trip.
      */
-    public function start($tripId)
+    public function startTrip($tripId)
     {
         $trip = Trip::findOrFail($tripId);
         $trip->update(['start_time' => now()]);
 
-        return response()->json($trip);
+        return response()->json([
+            'message' => 'Trip started successfully',
+            'trip' => $trip
+        ]);
     }
 
     /**
      * Complete the trip.
      */
-    public function complete(Request $request, $tripId)
+    public function completeTrip(Request $request, $tripId)
     {
         $trip = Trip::findOrFail($tripId);
 
-        // Optionally calculate final fare if necessary
-        $finalFare = $trip->fare_amount; // Use initial fare or recalculate if needed
-
         $trip->update([
             'end_time' => now(),
-            'fare_amount' => $finalFare,
             'status' => 'completed',
         ]);
 
-        // Notify user (implementation needed)
-        // ...
-
-        return response()->json($trip);
+        event(new UserMessage(['userMessage' => $tripId]));
+        return response()->json([
+            'message' => 'Trip completed successfully',
+            'trip' => $trip
+        ]);
     }
 
-    /**
-     * Calculate distance between two points.
-     */
-    private function calculateDistance($lat1, $lon1, $lat2, $lon2)
-    {
-        // Haversine formula or any distance calculation logic
-        $earthRadius = 6371; // Radius of the Earth in km
-
-        $dLat = deg2rad($lat2 - $lat1);
-        $dLon = deg2rad($lon2 - $lon1);
-
-        $a = sin($dLat / 2) * sin($dLat / 2) +
-             cos(deg2rad($lat1)) * cos(deg2rad($lat2)) *
-             sin($dLon / 2) * sin($dLon / 2);
-        $c = 2 * atan2(sqrt($a), sqrt(1 - $a));
-
-        $result = round($earthRadius * $c, 2); // Distance in km
-        return response()->json($result, 201);
-    }
 }

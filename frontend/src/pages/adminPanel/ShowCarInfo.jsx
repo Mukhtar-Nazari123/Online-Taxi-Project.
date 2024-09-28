@@ -26,6 +26,26 @@ function ShowCarInfo() {
     fetchCarsInfo();
   }, []);
 
+  const handleDelete = (carId) => {
+    const confirmDelete = window.confirm(`Do you want to delete the data?`);
+
+    if (confirmDelete) {
+      axios.delete(`/api/admin/deleteCar/${carId}`, {
+        headers: {
+          'Authorization': `Bearer ${localStorage.getItem('token')}`,
+        },
+      })
+      .then(response => {
+        setCars(cars.filter(car => car.id !== carId));
+        alert('Car info deleted successfully.');
+      })
+      .catch(error => {
+        console.error(error);
+        alert('Something went wrong while deleting the user account. Please try again later.');
+      });
+    }
+  };
+
   const handleSearch = (query) => {
     setSearchQuery(query);
   };
@@ -78,9 +98,14 @@ function ShowCarInfo() {
                   <span>{car.color}</span>
                 </li>
               </ul>
-              <button className="btn btn-info mt-1" onClick={() => handleEditClick(car.id)}>
-                Edit
-              </button>
+              <div className='row'>
+                <button className="btn btn-info mt-1 me-2" onClick={() => handleEditClick(car.id)}>
+                  Edit
+                </button>
+                <button className="btn btn-danger mt-1" style={{width: '75px'}} onClick={() => handleDelete(car.id)}>
+                  Delete
+                </button>
+              </div>
               {isEditModalOpen === car.id && (
               <EditCarInfo
                   isOpen={true}

@@ -1,6 +1,7 @@
 import React from 'react'
 import "./searchBar.css"
 import { useState } from 'react';
+import { Link } from "react-router-dom";
 
 function SearchBar({ onSearch }) {
   const [inputValue, setInputValue] = useState('');
@@ -32,7 +33,9 @@ function SearchBar({ onSearch }) {
                 </div>
             </div>
             <div className='m-3'>
-                <button className='btn btn-outline-success bg-primary Addbutton p-0 ' type='button'>Add</button>
+              <Link to="/driverRegister" className="text-decoration-none">
+                  <button className='btn btn-outline-success bg-primary Addbutton p-0 ' type='button'>Add</button>
+              </Link>
             </div>
         </div>
     </form>

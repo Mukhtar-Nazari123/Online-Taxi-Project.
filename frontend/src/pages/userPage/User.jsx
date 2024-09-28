@@ -1,4 +1,4 @@
-import React from "react";
+import React, {useEffect} from "react";
 import axios from "axios";
 import "./user.css";
 import { CgProfile } from "react-icons/cg";
@@ -10,6 +10,12 @@ import { useState } from "react";
 import debounce from 'lodash/debounce';
 import UserProfile from "./UserProfile";
 import RequestInfo from "./RequestInfo";
+import Pusher from 'pusher-js';
+import RequestAccepted from "./RequestAccepted";
+import {Link} from "react-router-dom";
+import { IoMdHome } from "react-icons/io";
+import Message from "./Message"
+
 
 const User = () => {
   const [originInput, setOriginInput] = useState("");
@@ -20,10 +26,16 @@ const User = () => {
   const [requestData, setRequestData] = useState(null)
   const [selectedOrigin, setSelectedOrigin] = useState(null);
   const [selectedDestination, setSelectedDestination] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+  const [showMessageModal, setShowMessageModal] = useState(false);
+  const [requestAccep, setRequestAccep] = useState({});
   const [toggle, setToggle] = useState(false);
+  const [tripId, setTripId] = useState ();
   const Toggle = () => {
     setToggle(!toggle);
   };
+  
+  console.log('trip id', tripId)
 
 
   // Function to handle changes in the origin and destination input field
@@ -94,24 +106,97 @@ const User = () => {
   };
 
   const handleSubmit = (event) => {
-    event.preventDefault(); // Prevent the default form submission
+    event.preventDefault();
     setRequestData({
       origin: originInput,
       destination: destinationInput,
       number: numberInput,
     });
-    console.log("Request Data: ", requestData); // Log or send the data as needed
-    // You can pass requestData to another component or make an API call here
+    console.log("Request Data: ", requestData);
   };
+
+    useEffect(() => {
+      Pusher.logToConsole = true;
+
+      const pusher = new Pusher('9a70a9abd2a13265d9c3', {
+          cluster: 'ap1',
+      });
+      const channel = pusher.subscribe('user-channel');
+
+      // Bind to the event
+      channel.bind('RideAccepted', (data) => {
+          const driverInfo = data.driverInfo;
+          console.log('Event receiveddd:', driverInfo);
+          setRequestAccep(data.driverInfo);
+          setShowModal(true);
+      });
+
+      // Cleanup on component unmount
+      return () => {
+          pusher.unsubscribe('user-channel');
+      };
+  }, []);
+
+    useEffect(() => {
+      Pusher.logToConsole = true;
+
+      const pusher = new Pusher('9a70a9abd2a13265d9c3', {
+          cluster: 'ap1',
+      });
+      const channel = pusher.subscribe('Noservice-channel');
+
+      channel.bind('NoService', (data) => {
+          console.log('Event receiveddd:', data.message);
+          const info = data.message
+          alert(JSON.stringify(info.message));
+
+      });
+      return () => {
+          pusher.unsubscribe('Noservice-channel');
+      };
+    }, []);
+
+    useEffect(() => {
+      Pusher.logToConsole = true;
+
+      const pusher = new Pusher('9a70a9abd2a13265d9c3', {
+          cluster: 'ap1',
+      });
+      const channel = pusher.subscribe('userMessage-channel');
+
+      channel.bind('userMessageFt', (data) => {
+          console.log('send your message: ', data.userMessage);
+          const info = data.userMessage;
+          setShowMessageModal(true)
+          setTripId(parseInt(info.userMessage, 10));
+
+      });
+      return () => {
+          pusher.unsubscribe('userMessage-channel');
+      };
+    }, []);
+
 
   const handleRequestInfoClose = () => {
     setRequestData(null); // Reset requestData to null when closing
   };
 
+  const handleClose = () => setShowModal(false);
+  const handleMessageClose = () => setShowMessageModal(false);
+
   return (
     <div>
       <nav className="navbar navbar-dark bg-dark">
-        <span className="navbar-brand m-3 h1">Online Taxi</span>
+        <span className="navbar-brand h1 d-flex align-item-center">
+          <Link to="/" title="home" className="text-decoration-none">
+            <IoMdHome className="fs-1 homeIconU"/>
+          </Link>
+        </span>
+        <ul className="navbar-nav justify-content flex-grow-1 pe-3">
+          <li className="nav-item text-light fs-3">
+            Online Taxi
+          </li>
+        </ul>
         <div className="m-3">
           <IconContext.Provider
             value={{
@@ -124,15 +209,19 @@ const User = () => {
           </IconContext.Provider>
         </div>
       </nav>
+      <RequestAccepted show={showModal} handleClose={handleClose} driverInfo={requestAccep}/>
+      <Message show={showMessageModal} handleClose={handleMessageClose} tripId={tripId}/>
       {toggle && <UserProfile />}
-
       <div className="container-fluid">
         <div className="row">
           <div className="col-lg-4 p-2">
             <div>{/*Search Section*/}</div>
             <div className="d-flex justify-content-center">
               <div className="RequestTaxiDiv">
-                <h2>Get Ride</h2>
+                <div>
+                  <i className="bi bi-car-front fs-1 me-2 mx-2" style={{color: '#FFCC00'}}></i>
+                  <span className="fs-2">Get Ride</span>
+                </div>
                 <form onSubmit={handleSubmit} action="">
                   <div>
                   </div>
@@ -144,7 +233,7 @@ const User = () => {
                       }}
                     >
                       <div className="d-flex justify-content-start gap-2 mt-3">
-                        <FaMapMarkedAlt />
+                        <FaMapMarkedAlt className="text-primary" />
                         <label htmlFor="origin">Origin</label>
                       </div>
                     </IconContext.Provider>
@@ -188,7 +277,7 @@ const User = () => {
                       }}
                     >
                       <div className="d-flex justify-content-start gap-2 mt-3">
-                        <FaMapMarkedAlt />
+                        <FaMapMarkedAlt className="text-danger"/>
                         <label htmlFor="destination">Destination</label>
                       </div>
                     </IconContext.Provider>
@@ -232,7 +321,7 @@ const User = () => {
                       }}
                     >
                       <div className="d-flex justify-content-start gap-2 mt-3">
-                          <FaUsers />
+                          <FaUsers className="text-success"/>
                         <label htmlFor="destination">Number</label>
                       </div>
                     </IconContext.Provider>

@@ -13,6 +13,8 @@ import {
 import { Container, Row, Col, Form, Button } from "react-bootstrap";
 import "bootstrap/dist/css/bootstrap.min.css";
 import "./footer.css"; // Import your custom CSS for additional styling
+import { Link } from "react-router-dom";
+
 
 const Footer1 = () => {
   return (
@@ -27,6 +29,12 @@ const Footer1 = () => {
         <Row className="mb-5">
           <Col md={6} className="mb-4 mb-md-0">
             <h5>About Us</h5>
+            <p>
+              Sina Taxi Company provides reliable and efficient taxi services to
+              ensure your journey is comfortable and safe. With our commitment
+              to excellence and customer satisfaction, we strive to make every
+              ride an exceptional experience.
+            </p>
             <p>
               Sina Taxi Company provides reliable and efficient taxi services to
               ensure your journey is comfortable and safe. With our commitment
@@ -50,7 +58,7 @@ const Footer1 = () => {
                   as="textarea"
                   placeholder="Write your message"
                   aria-label="Message"
-                  rows={3}
+                  rows={4}
                 />
               </Form.Group>
               <Button type="submit" className="emailBtn btn btn-primary" style={{width:'40px'}}>
@@ -94,41 +102,51 @@ const Footer1 = () => {
               </a>
             </div>
             <div className="action-icons">
-              <a
-                href="https://websim.example.com/sina-taxi-company/"
-                className="me-3 text-decoration-none"
-                aria-label="Home"
-              >
-                <FaHome /> Home
-              </a>
-              <a
-                href="https://websim.example.com/sina-taxi-company/book-ride"
-                className="me-3 text-decoration-none"
-                aria-label="Book a Ride"
-              >
-                <FaCar /> Ride
-              </a>
-              <a
-                href="https://websim.example.com/sina-taxi-company/become-driver"
-                className="me-3 text-decoration-none"
-                aria-label="Become a Driver"
-              >
-                <FaIdCard /> Driver
-              </a>
-              <a
-                href="https://websim.example.com/sina-taxi-company/signin"
-                className="me-3 text-decoration-none"
-                aria-label="Sign In"
-              >
-                <FaSignInAlt /> Sign In
-              </a>
-              <a
-                href="https://websim.example.com/sina-taxi-company/signup"
-                className="me-3 text-decoration-none"
-                aria-label="Sign Up"
-              >
-                <FaUserPlus /> Sign Up
-              </a>
+            <Link to="/" className="text-decoration-none">
+                <a
+                  href="#1"
+                  className="me-1 text-decoration-none"
+                  aria-label="Home"
+                >
+                  <FaHome /> Home
+                </a>
+              </Link>
+              <Link to="/user" className="text-decoration-none">
+                <a
+                  href="#1"
+                  className="me-1 text-decoration-none"
+                  aria-label="Book a Ride"
+                >
+                  <FaCar /> Ride
+                </a>
+              </Link>
+              <Link to="/driver" className="text-decoration-none">
+                <a
+                  href="#1"
+                  className="me-1 text-decoration-none"
+                  aria-label="Become a Driver"
+                >
+                  <FaIdCard /> Driver
+                </a>
+              </Link>
+              <Link to="/login" className="text-decoration-none">
+                <a
+                  href="#1"
+                  className="me-1 text-decoration-none"
+                  aria-label="Sign In"
+                >
+                  <FaSignInAlt /> Sign In
+                </a>
+              </Link>
+              <Link to="/register" className="text-decoration-none">
+                <a
+                  href="#1"
+                  className="me-1 text-decoration-none"
+                  aria-label="Sign Up"
+                >
+                  <FaUserPlus /> Sign Up
+                </a>
+              </Link>
             </div>
           </Col>
         </Row>

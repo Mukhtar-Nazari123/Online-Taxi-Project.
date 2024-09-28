@@ -29,9 +29,9 @@ class UserAuthController extends Controller
     {
         $validateUser = Validator::make($request->all(),
         [
-            'name' => 'required|string|max:255',
+            'name' => 'required|string|max:255|regex:/^[A-Za-z]+$/',
             'email' => 'required|string|email|unique:users|max:255',
-            'phone_number' => 'required|string|max:10|min:10',
+            'phone_number' => 'required|string|min:10',
             'password' => 'required|string|min:8',
             'confirm_password' => 'required|same:password',
             'role' => 'required|string',
@@ -59,6 +59,7 @@ class UserAuthController extends Controller
             'status' => 200,
             'id' => $user->id,
             'name' => $user->name,
+            'role' => $user->role,
             'token' => $token,
             'message' => 'Congratulations! Your account has been successfully created.'
         ]);
@@ -67,9 +68,9 @@ class UserAuthController extends Controller
         public function update(Request $request, User $user)
     {
         $validatedData = $request->validate([
-            'name' => 'nullable|string|max:255',
+            'name' => 'nullable|string|max:255|regex:/^[A-Za-z]+$/',
             'email' => 'nullable|string|email|unique:users,email,'.$user->id.'|max:255',
-            'phone_number' => 'nullable|string|max:10|min:10',
+            'phone_number' => 'nullable|string|min:10',
             'old_password' => 'required_with:password|string|min:8',
             'password' => 'nullable|string|min:8',
             'confirm_password' => 'required_with:password|same:password',
@@ -150,7 +151,7 @@ class UserAuthController extends Controller
                 'message' => 'Congratulations! You logged in successfully.',
                 'id'=> $user->id,
                 'name' => $user->name,
-                'role' => $user->role,  // Include user role
+                'role' => $user->role,
                 'token' => $user->createToken("API TOKEN")->plainTextToken,
                 'driverStatus' => $driverStatus,
                 'driverId' => $driverId

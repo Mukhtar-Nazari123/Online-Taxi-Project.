@@ -1,16 +1,37 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./navbar.css";
+import logo from '../assets/images/logo.jpg';
 
 export class Navbar extends Component {
+
+  userNavigationLinks() {
+    const isAuthenticated = !!localStorage.getItem('token');
+    const userRole = localStorage.getItem('role');
+    return isAuthenticated && userRole === 'user' ? "/user" : "/register";
+  }
+
+  drivernavigationLink() {
+    const isAuthenticated = !!localStorage.getItem('token');
+    const userRole = localStorage.getItem('role');
+
+    return isAuthenticated && userRole === 'driver' ? "/driver" : "/driverRegister";
+  }
+
   render() {
+    const usernavigationLink = this.userNavigationLinks();
+    const drivernavigationLink = this.drivernavigationLink();
+
+    const { contactClick } = this.props;
     return (
 
       <nav className="navbar navbar-expand-lg navbar-dark bg-dark fixed-top m-0 p-0">
         <div className="container-fluid">
           <a className="navbar-brand" href="#1">
-
-            <h1>Online Taxi</h1>
+            <div className="d-flex justify-content-center align-items-center">
+              <img src={logo} alt="Logo" className="logo d-inline" />
+              <h2 className="ms-2 d-inline">Online Taxi</h2>
+            </div>
           </a>
           <button
             className="navbar-toggler bg-primary"
@@ -42,23 +63,27 @@ export class Navbar extends Component {
             <div className="offcanvas-body navItems">
               <ul className="navbar-nav justify-content flex-grow-1 pe-3">
                 <li className="nav-item">
-                  <Link to="/register" className="text-decoration-none">
-                    <span
-                      className="nav-link text-light p-4"
-                      aria-current="page"
-                    >
+                <a className="nav-link text-light p-4" href="#2">
+                  <Link to={usernavigationLink} className="text-decoration-none">
                       Ride
-                    </span>
                   </Link>
+                </a>
                 </li>
                 <li className="nav-item">
-                  <Link to="/driverRegister" className="text-decoration-none">
-                    <span className="nav-link text-light p-4">Drive</span>
+                <a className="nav-link text-light p-4" href="#2">
+                  <Link to={drivernavigationLink} className="text-decoration-none">
+                    Drive
                   </Link>
+                </a>
                 </li>
                 <li className="nav-item">
                   <a className="nav-link text-light p-4" href="#1">
-                    About us
+                  <Link to="#" className="text-decoration-none" onClick={contactClick}>About us</Link>
+                  </a>
+                </li>
+                <li className="nav-item">
+                  <a className="nav-link text-light p-4" href="#1">
+                  <Link to="#" className="text-decoration-none" onClick={contactClick}>Contact us</Link>
                   </a>
                 </li>
               </ul>

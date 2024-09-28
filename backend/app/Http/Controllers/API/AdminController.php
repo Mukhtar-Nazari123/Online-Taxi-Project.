@@ -4,6 +4,8 @@ namespace App\Http\Controllers\API;
 use App\Models\User;
 use App\Models\Driver;
 use App\Models\Car;
+use App\Models\Message;
+use App\Models\Trip;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -37,17 +39,16 @@ class AdminController extends Controller
     {
         $drivers = Driver::with('user')->get(); // Eager load the user relationship
 
-        // Option 1: Include user name directly in the response
         $drivers = $drivers->map(function ($driver) {
             return [
                 'id' => $driver->id,
                 'user_id' => $driver->user_id,
-                'your_photo' => Storage::url($driver->your_photo), // Get complete URL
-                'id_card_photo' => Storage::url($driver->id_card_photo), // Get complete URL
-                'license_photo' => Storage::url($driver->license_photo), // Get complete URL
+                'driver_name' => $driver->user->name,
+                'your_photo' => Storage::url($driver->your_photo),
+                'id_card_photo' => Storage::url($driver->id_card_photo),
+                'license_photo' => Storage::url($driver->license_photo),
                 'address' => $driver->address,
                 'status' => $driver->status,
-                'user_name' => $driver->user->name, // Include user name
             ];
         });
 
@@ -90,5 +91,44 @@ class AdminController extends Controller
             'status' => true,
             'data' => $carsWithDriverInfo,
         ], 200);
+    }
+
+    public function deleteCar($id)
+    {
+        try {
+            $car = Car::findOrFail($id);
+            $car->delete();
+            return response()->json(['message' => 'Car info deleted successfully.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error deleting car info.'], 500);
+        }
+    }
+
+    public function getMessages()
+    {
+        try {
+            $messages = Message::with('trip.driver.user')->get();
+            return response()->json([
+                'success' => true,
+                'data' => $messages
+            ]);
+        } catch (\Exception $e) {
+            Log::error('Error fetching messages: ' . $e->getMessage());
+            return response()->json([
+                'success' => false,
+                'message' => 'An error occurred while fetching messages.'
+            ], 500);
+        }
+    }
+
+    public function deleteMessage($id)
+    {
+        try {
+            $message = Message::findOrFail($id);
+            $message->delete();
+            return response()->json(['message' => 'Message deleted successfully.'], 200);
+        } catch (\Exception $e) {
+            return response()->json(['message' => 'Error deleting message.'], 500);
+        }
     }
 }

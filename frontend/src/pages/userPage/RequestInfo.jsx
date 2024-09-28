@@ -13,7 +13,7 @@ function RequestInfo({ requestData, onClose }) {
   const handleConfirm = async () => {
     try {
       const response = await axios.post('api/trip/tripRequest', {
-        user_id: user_id, // Ensure you pass the correct user ID
+        user_id: user_id, 
         origin: origin.label,
         origin_latitude: origin.latitude,
         origin_longitude: origin.longitude,

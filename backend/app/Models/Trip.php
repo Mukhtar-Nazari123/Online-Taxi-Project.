@@ -37,4 +37,10 @@ class Trip extends Model
     {
         return $this->belongsTo(Driver::class);
     }
+
+    public function message()
+    {
+        return $this->hasOne(Message::class);
+    }
 }
+

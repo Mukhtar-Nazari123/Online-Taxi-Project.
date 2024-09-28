@@ -4,6 +4,7 @@ import "./registrationForm.css";
 import { useNavigate, Link } from "react-router-dom";
 import axiosInstance from "../../components/axiosInstance";
 import swal from 'sweetalert';
+import { IoMdHome } from "react-icons/io";
 
 const RegistrationForm = () => {
   const navigate = useNavigate();
@@ -40,8 +41,8 @@ const RegistrationForm = () => {
           localStorage.setItem('token', res.data.token);
           localStorage.setItem('name', res.data.name);
           localStorage.setItem('id', res.data.id);
+          localStorage.setItem('role', res.data.role);
 
-          
           // Set token expiration (e.g., 7 days)
           const expiresIn = 7;
           const expirationDate = new Date(new Date().getTime() + expiresIn * 24 * 60 * 60 * 1000);
@@ -61,12 +62,17 @@ const RegistrationForm = () => {
 
   return (
     <Container className="mt-5">
+      <Link to="/" title="home" className="text-decoration-none">
+          <IoMdHome className="fs-2 homeIcon"/>
+      </Link>
       <Row className="justify-content-md-center">
         <Col md={6}>
+        <div className="bg-primary formHeader p-2">
+          <h2 className="text-center">Register</h2>
+        </div>
           <Form className="registration-form" onSubmit={registerSubmit}>
-            <h2 className="text-center">Register</h2>
             <Form.Group controlId="formName">
-              <Form.Label className="formLabel">Name</Form.Label>
+              <Form.Label className="formLabel">Full Name</Form.Label>
               <Form.Control
                 type="text"
                 placeholder="Enter your name"
@@ -139,7 +145,10 @@ const RegistrationForm = () => {
               Register
             </Button>
             <p className="my-2">
-              Already have an account? <Link to="/login" className="text-decoration-none">Login</Link>
+              Already have an account? <Link to="/login" className="text-decoration-none me-2">Login</Link>
+              <Link to="/" className="text-decoration-none">
+              Home
+              </Link>
             </p>
           </Form>
         </Col>

@@ -107,7 +107,7 @@ const DriverProfiles = () => {
     }
 
     return (
-        (showContainer && <div className="fullBody container mt-5" ref={containerRef}>
+        (showContainer && <div className="fullBody col-10 container mt-5" ref={containerRef}>
             <div className="close-btn2" onClick={handleClose}>
                 &times;
             </div>

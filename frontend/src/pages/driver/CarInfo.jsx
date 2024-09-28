@@ -56,7 +56,7 @@ function CarInfo() {
   }, []);
 
   return (
-    (showContainer && <div className='cardBody d-flex justify-content-center' ref={containerRef}>
+    (showContainer && <div className='cardBody d-flex justify-content-center col-5' ref={containerRef}>
       <div className='col-12 mt-2'>
       <div className="close-btn" onClick={handleClose}>
             &times;

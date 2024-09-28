@@ -61,10 +61,9 @@ function Drivers() {
         // 2. Determine the new status
         const newStatus = currentDriver.status === 'disabled' ? 'enabled' : 'disabled';
   
-        // 3. Send a PUT request to update the driver's status
         const response = await axios.put(
-          `/api/admin/drivers/${driverId}/status`, // Your API endpoint
-          { status: newStatus }, // Send 'enabled' or 'disabled'
+          `/api/admin/drivers/${driverId}/status`,
+          { status: newStatus },
           {
             headers: {
               'Authorization': `Bearer ${localStorage.getItem('token')}`,
@@ -73,14 +72,12 @@ function Drivers() {
           }
         );
   
-        // 4. Update the local state with the new status
         setDrivers(prevDrivers => 
           prevDrivers.map(driver => 
             driver.id === driverId ? { ...driver, status: newStatus } : driver
           )
         );
-  
-        // 5. Handle success or error (optional)
+
         if (response.status === 200) {
           console.log('Driver status updated successfully!');
         } else {
@@ -105,7 +102,7 @@ function Drivers() {
   };
 
   const filteredDrivers = drivers.filter(driver => 
-    driver.user_name.toLowerCase().includes(searchQuery.toLowerCase())
+    driver.driver_name.toLowerCase().includes(searchQuery.toLowerCase())
   );
 
   const handleImageClick = (imageUrl) => {
@@ -117,8 +114,8 @@ function Drivers() {
   };
 
   const EditcloseModal = async () => {
-    setShowEdit(false); // Hide the modal
-    await fetchDrivers(); // Fetch updated drivers after closing the modal
+    setShowEdit(false);
+    await fetchDrivers(); 
   };
 
 
@@ -153,7 +150,7 @@ function Drivers() {
                   filteredDrivers.map((driver, index) => (
                     <tr key={index}>
                       <th scope="row">{driver.id}</th>
-                      <td>{driver.user_name}</td>
+                      <td>{driver.driver_name}</td>
                       <td>
                       <img 
                         src={`http://localhost:8000${driver.your_photo}`} 

@@ -42,10 +42,8 @@ function ChangePwd() {
         return () => clearTimeout(timer);
       } else {
         console.error('Error updating user data:', error);
-        // Handle other errors, e.g., display a generic error message
         setErrorMessages({ '_general': 'An error occurred while saving the changes. Please try again later.' });
         setShowErrorMessages(true);
-        // Set a timer to hide the error messages after 5 seconds
         const timer = setTimeout(() => {
           setShowErrorMessages(false);
         }, 5000);
@@ -56,7 +54,7 @@ function ChangePwd() {
   return (
     <div className="">
       <div className="container my-3">
-        <div className="form-container">
+        <div className="form-container" style={{backgroundColor: '#bfc1c4'}}>
         {showErrorMessages && (
           <div>
             {Object.keys(errorMessages).map((field) => (

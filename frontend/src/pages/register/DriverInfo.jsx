@@ -9,7 +9,7 @@ function DriverInfo() {
     license_photo: null,
   });
   const [address, setAddress] = useState('');
-  const userId = localStorage.getItem('id');
+  const userId = localStorage.getItem('driver_id');
   const [loading, setLoading] = useState(false);
   const [errorMessage, setErrorMessage] = useState('');
   const [successMessage, setSuccessMessage] = useState('');
